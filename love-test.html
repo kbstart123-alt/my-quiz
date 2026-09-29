@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네트워크.gg LAB - 심리테스트</title>
+  <style>
+    :root {
+      --primary: #ff6b81;
+      --primary-hover: #ff4757;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #2f3542;
+      --sub-text: #747d8c;
+      --main-purple: #8c7ae6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+
+    .main-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 헤더 */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #3b3b98;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #70a1ff;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cat-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid #e0e0e0;
+      background: #fff;
+      color: #57606f;
+      cursor: pointer;
+    }
+
+    .cat-btn.active {
+      background: #70a1ff;
+      color: #fff;
+      border-color: #70a1ff;
+    }
+
+    /* 배너 */
+    .banner {
+      background: linear-gradient(135deg, #a55eea, #70a1ff);
+      border-radius: 20px;
+      padding: 40px 20px;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 20px rgba(112, 161, 255, 0.25);
+    }
+
+    .banner h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .banner p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* 검색창 */
+    .search-box {
+      margin-bottom: 30px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 30px;
+      border: 1px solid #dcdde1;
+      font-size: 0.95rem;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+
+    /* 카드 그리드 레이아웃 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .test-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .test-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-tag {
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tag-pet {
+      background: #f1f2f6;
+      color: #70a1ff;
+    }
+
+    .tag-love {
+      background: #ffe0e6;
+      color: #ff6b81;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      font-size: 0.8rem;
+      color: var(--sub-text);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-wrapper">
+    <!-- 헤더 -->
+    <header class="header">
+      <a href="index.html" class="logo">네트워크<span>.gg LAB</span></a>
+      <div class="categories">
+        <button class="cat-btn active">전체</button>
+        <button class="cat-btn">반려동물</button>
+        <button class="cat-btn">성격</button>
+        <button class="cat-btn">연애</button>
+      </div>
+    </header>
+
+    <!-- 배너 -->
+    <section class="banner">
+      <h1>나를 찾아가는 심리테스트 🧠</h1>
+      <p>간단한 문항을 통해 나의 성격 유형과 심리 상태를 확인해 보세요.</p>
+    </section>
+
+    <!-- 검색창 -->
+    <div class="search-box">
+      <input type="text" placeholder="궁금한 심리테스트를 검색해 보세요...">
+    </div>
+
+    <!-- 테스트 카드 리스트 (반려동물 + 연애 심리테스트) -->
+    <main class="card-grid">
+      
+      <!-- 1. 반려동물 테스트 카드 -->
+      <a href="dog-test.html" class="test-card">
+        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="강아지 테스트" class="card-img">
+        <div class="card-body">
+          <span class="card-tag tag-pet">반려동물</span>
+          <h2 class="card-title">나와 어울리는 강아지 성격 테스트 🐶</h2>
+          <div class="card-footer">
+            ⏱️ 소요시간 약 2분
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. 연애 심리테스트 카드 (추가된 카드) -->
+      <a href="love-test.html" class="test-card">
+        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트" class="card-img">
+        <div class="card-body">
+          <span class="card-tag tag-love">연애</span>
+          <h2 class="card-title">나의 연애 캐릭터 테스트 💕</h2>
+          <div class="card-footer">
+            ⏱️ 소요시간 약 2분
+          </div>
+        </div>
+      </a>
+
+    </main>
+  </div>
+
+</body>
+</html>
