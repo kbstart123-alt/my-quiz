@@ -6,21 +6,25 @@
   <title>나와 어울리는 강아지 성격 테스트 🐶</title>
   <style>
     :root {
-      --primary: #6c5ce7;
-      --primary-hover: #5b4bc4;
-      --bg: #f8f9fa;
+      --primary: #ff9f43;
+      --primary-hover: #ee5253;
+      --bg-color: #fff9f0;
+      --card-bg: #ffffff;
+      --text-color: #2f3542;
+      --sub-text: #747d8c;
+      --border-color: #ffeaa7;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Pretendard', sans-serif, -apple-system;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     }
 
     body {
-      background-color: var(--bg);
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -28,228 +32,489 @@
       padding: 20px;
     }
 
-    .card {
-      background: white;
+    .container {
+      width: 100%;
       max-width: 480px;
-      width: 100%;
-      padding: 30px 24px;
+      background: var(--card-bg);
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      box-shadow: 0 10px 25px rgba(255, 159, 67, 0.15);
+      padding: 30px 20px;
       text-align: center;
+      overflow: hidden;
+      position: relative;
     }
 
-    .thumb-img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-radius: 14px;
-      margin-bottom: 20px;
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
     }
 
-    h1 {
-      font-size: 1.4rem;
-      color: var(--primary);
+    .screen.active {
+      display: flex;
+    }
+
+    /* 시작 화면 */
+    .test-badge {
+      background: #ffeaa7;
+      color: #d63031;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 800;
       margin-bottom: 10px;
+      word-break: keep-all;
+      color: #e67e22;
     }
 
-    p.desc {
-      color: #666;
+    .subtitle {
       font-size: 0.95rem;
-      margin-bottom: 24px;
-      line-height: 1.4;
+      color: var(--sub-text);
+      margin-bottom: 25px;
+      word-break: keep-all;
     }
 
-    /* 버튼 스타일 */
+    .main-img {
+      width: 100%;
+      max-width: 260px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 30px;
+    }
+
     .btn {
       width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
       background-color: var(--primary);
       color: white;
-      border: none;
-      padding: 14px 20px;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      border-radius: 12px;
       cursor: pointer;
-      transition: background 0.2s ease;
-      margin-bottom: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
     }
 
     .btn:hover {
-      background-color: var(--primary-hover);
+      background-color: #e67e22;
+      transform: translateY(-2px);
     }
 
-    .option-btn {
-      background-color: #f1f3f5;
-      color: #333;
-      text-align: left;
-      font-weight: 500;
-      border: 1px solid #e9ecef;
+    .btn-secondary {
+      background-color: #f1f2f6;
+      color: var(--text-color);
+      box-shadow: none;
+      margin-top: 10px;
     }
 
-    .option-btn:hover {
-      background-color: #e9ecef;
+    .btn-secondary:hover {
+      background-color: #e4e7eb;
     }
 
     .back-link {
       display: inline-block;
-      margin-top: 16px;
-      color: #888;
+      margin-top: 15px;
+      color: var(--sub-text);
       text-decoration: none;
       font-size: 0.85rem;
     }
 
-    /* 프로그레스 바 */
-    .progress-bar {
+    /* 질문 화면 */
+    .progress-bar-container {
       width: 100%;
       height: 8px;
-      background-color: #eee;
+      background-color: #ffeaa7;
       border-radius: 4px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       overflow: hidden;
     }
 
-    .progress {
+    .progress-bar {
       height: 100%;
       width: 0%;
       background-color: var(--primary);
+      border-radius: 4px;
       transition: width 0.3s ease;
     }
 
-    .hidden {
-      display: none;
+    .q-number {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .q-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 30px;
+      word-break: keep-all;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 16px 15px;
+      margin-bottom: 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      background: white;
+      font-size: 0.95rem;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      word-break: keep-all;
+      line-height: 1.35;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background-color: #fff9f0;
+      color: #e67e22;
+      font-weight: 600;
+    }
+
+    /* 로딩 화면 */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #ffeaa7;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 30px 0;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 결과 화면 */
+    .result-tag {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      color: #e67e22;
+    }
+
+    .result-img {
+      width: 100%;
+      max-width: 240px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .desc-box {
+      background: #fffdf9;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 25px;
+      width: 100%;
+    }
+
+    .desc-box p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #4a5568;
+      margin-bottom: 10px;
+      word-break: keep-all;
+    }
+
+    .desc-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn-group {
+      width: 100%;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    
+  <div class="container">
     <!-- 1. 시작 화면 -->
-    <div id="start-screen">
-      <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" class="thumb-img" alt="강아지">
-      <h1>나와 어울리는 강아지 성격 테스트 🐶</h1>
-      <p class="desc">나의 성격 및 라이프스타일과 딱 맞는 강아지 품종을 찾아보세요!</p>
-      <button class="btn" onclick="startTest()">테스트 시작하기</button>
+    <div id="start-screen" class="screen active">
+      <span class="test-badge">DOG PERSONALITY TEST</span>
+      <h1 class="title">나와 어울리는 강아지 테스트</h1>
+      <p class="subtitle">12가지 질문으로 알아보는<br>나의 성격과 딱 맞는 강아지 유형! 🐾</p>
+      <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="강아지 메인 이미지" class="main-img">
+      <button class="btn" onclick="startQuiz()">테스트 시작하기</button>
       <a href="index.html" class="back-link">← 메인 화면으로 돌아가기</a>
     </div>
 
     <!-- 2. 질문 화면 -->
-    <div id="quiz-screen" class="hidden">
-      <div class="progress-bar">
-        <div id="progress" class="progress"></div>
+    <div id="quiz-screen" class="screen">
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
       </div>
-      <h1 id="question-text" style="font-size: 1.15rem; margin-bottom: 20px; color: #222;">질문 내용</h1>
-      <div id="options-container"></div>
+      <div id="q-number" class="q-number">Q1.</div>
+      <div id="q-text" class="q-text">질문이 들어갈 자리입니다.</div>
+      <div id="options-container" style="width: 100%;"></div>
     </div>
 
-    <!-- 3. 결과 화면 -->
-    <div id="result-screen" class="hidden">
-      <img id="result-img" class="thumb-img" src="" alt="결과 강아지">
-      <h1 id="result-title">결과 타이틀</h1>
-      <p id="result-desc" class="desc">결과 설명</p>
-      <button class="btn" onclick="restartTest()">다시 테스트하기</button>
+    <!-- 3. 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <h2 style="font-size: 1.2rem; font-weight: 700; color: #e67e22;">내 성격 분석 중...</h2>
+      <p style="color: var(--sub-text); margin-top: 8px; font-size: 0.9rem;">나와 찰떡궁합인 강아지를 찾고 있어요!</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div id="result-tag" class="result-tag">당신과 어울리는 강아지는?</div>
+      <h1 id="result-title" class="result-title">결과 제목</h1>
+      <img id="result-img" src="" alt="결과 이미지" class="result-img">
+      <div class="desc-box" id="result-desc"></div>
+      <div class="btn-group">
+        <button class="btn" onclick="shareResult()">결과 공유하기</button>
+        <button class="btn btn-secondary" onclick="restartQuiz()">다시 테스트하기</button>
+      </div>
       <a href="index.html" class="back-link">← 메인 화면으로 돌아가기</a>
     </div>
-
   </div>
 
   <script>
-    // 질문 데이터
+    // 강아지 성격 테스트 질문 데이터 (12문항)
     const questions = [
       {
-        q: "주말에 주로 무엇을 하며 시간을 보내나요?",
-        options: [
-          { text: "야외로 나아가 산책이나 운동을 즐긴다 🏃‍♂️", type: "active" },
-          { text: "집에서 영화를 보며 여유롭게 쉰다 🛋️", type: "quiet" }
+        q: "주말에 산책을 나갈 때 당신이 더 선호하는 스타일은?",
+        a: [
+          { text: "사람들과 강아지들이 많은 핫한 공원에서 활발하게 걷기", type: "E" },
+          { text: "조용하고 한적한 숲길이나 산책로에서 여유롭게 걷기", type: "I" }
         ]
       },
       {
-        q: "새로운 사람들과 모임에 참석했을 때 당신의 행동은?",
-        options: [
-          { text: "먼저 말을 걸고 친해지려고 노력한다 🎉", type: "active" },
-          { text: "조용히 분위기를 살피며 어울린다 ☕", type: "quiet" }
+        q: "처음 보는 사람이나 강아지가 다가왔을 때 당신의 반응은?",
+        a: [
+          { text: "반갑게 인사하며 쉽게 친해지고 이야기를 나눈다.", type: "E" },
+          { text: "상대방의 분위기를 살피며 천천히 기회를 본다.", type: "I" }
         ]
       },
       {
-        q: "친구와의 약속이 갑자기 취소되었을 때 당신은?",
-        options: [
-          { text: "아쉽다! 다른 사람에게 연락해 본다 📱", type: "active" },
-          { text: "오예! 혼자만의 시간을 신나게 누린다 🥳", type: "quiet" }
+        q: "강아지 훈련을 시킬 때 당신이 가장 중요하게 생각하는 것은?",
+        a: [
+          { text: "명확한 규칙과 실용적인 간식 보상 체계", type: "S" },
+          { text: "강아지와의 마음 속 교감과 눈빛 아이컨택", type: "N" }
+        ]
+      },
+      {
+        q: "새로운 강아지 용품을 구매할 때 당신의 기준은?",
+        a: [
+          { text: "후기가 검증되고 내구성 좋은 실용적인 제품", type: "S" },
+          { text: "디자인이 독특하고 감성 넘치는 신상 아이템", type: "N" }
+        ]
+      },
+      {
+        q: "강아지가 기분이 안 좋아 보일 때 당신의 첫 번째 행동은?",
+        a: [
+          { text: "'어디 아픈가?' 몸 상태나 식사량을 체크해 본다.", type: "T" },
+          { text: "'무슨 일 있니?' 꼭 안아주며 오랫동안 다독여준다.", type: "F" }
+        ]
+      },
+      {
+        q: "친구의 강아지가 귀여운 장난을 쳤을 때 나의 리액션은?",
+        a: [
+          { text: "'진짜 똑똑하다! 행동 양식이 독특하네'", type: "T" },
+          { text: "'어머 너무 귀여워! 심장 아파 ㅠㅠ'", type: "F" }
+        ]
+      },
+      {
+        q: "강아지와의 1박 2일 여행을 준비할 때 당신은?",
+        a: [
+          { text: "애견 동반 식당, 카페, 병원 동선까지 완벽히 계획한다.", type: "J" },
+          { text: "필수 짐만 싸두고 현지에서 끌리는 곳으로 간다.", type: "P" }
+        ]
+      },
+      {
+        q: "산책 중 갑자기 비가 내리기 시작할 때 당신은?",
+        a: [
+          { text: "미리 우비를 챙겨왔거나 근처 건물을 빠르게 찾아 피한다.", type: "J" },
+          { text: "'비 맞으며 뛰는 것도 추억이지!' 하며 같이 신나게 뛴다.", type: "P" }
+        ]
+      },
+      {
+        q: "휴일에 집에서 쉴 때 가장 행복한 시간은?",
+        a: [
+          { text: "야외 애견 카페에서 마음껏 뛰어놀게 할 때", type: "E" },
+          { text: "따뜻한 이불 속에서 같이 푹 자거나 쉴 때", type: "I" }
+        ]
+      },
+      {
+        q: "강아지가 이상한 행동을 할 때 드는 생각은?",
+        a: [
+          { text: "'어디서 저런 행동을 배웠지? 원인이 뭘까?'", type: "S" },
+          { text: "'혹시 나한테 무슨 말을 하려는 건 아닐까?' 상상한다.", type: "N" }
+        ]
+      },
+      {
+        q: "강아지가 실수를 했을 때 나의 교육 방식은?",
+        a: [
+          { text: "잘못된 행동을 즉시 교정하고 대안을 제시한다.", type: "T" },
+          { text: "안쓰러워서 세게 훈육하지 못하고 마음이 아파한다.", type: "F" }
+        ]
+      },
+      {
+        q: "하루 일과 중 강아지 산책 시간을 정할 때 나는?",
+        a: [
+          { text: "매일 지정된 규칙적인 시간에 나간다.", type: "J" },
+          { text: "그날의 컨디션과 내 일정에 맞춰 자유롭게 나간다.", type: "P" }
         ]
       }
     ];
 
-    // 결과 데이터
+    // 강아지 유형 결과 데이터
     const results = {
-      active: {
-        title: "에너지 넘치는 [골든 리트리버] 🦮",
-        desc: "당신은 밝고 사교적이며 활력이 넘치는 사람입니다! 누구와도 금방 친해지며 사람들에게 긍정적인 에너지를 전달합니다.",
-        img: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=500&q=80"
+      "ESTJ": {
+        title: "든든한 리더 [체크왕 셰퍼드] 🐕",
+        img: "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?auto=format&fit=crop&w=500&q=80",
+        desc: [
+          "• 규칙적이고 체계적인 생활을 좋아하는 당신!",
+          "• 약속과 시간을 철저히 지키며 신뢰감이 넘칩니다.",
+          "• 강아지에게도 든든한 울타리와 보호자가 되어줍니다."
+        ]
       },
-      quiet: {
-        title: "차분하고 차분한 [시바견] 🐕",
-        desc: "당신은 독립적이고 차분하며 신중한 성격입니다. 혼자만의 시간을 잘 활용하며 깊은 인간관계를 선호합니다.",
-        img: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=500&q=80"
+      "INFP": {
+        title: "로맨틱 감성 [다정한 웰시코기] 🦊",
+        img: "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=500&q=80",
+        desc: [
+          "• 마음이 따뜻하고 상대의 작은 변화도 세심하게 잘 읽어냅니다.",
+          "• 조용하지만 깊은 애정 표현으로 깊은 교감을 이끌어냅니다.",
+          "• 강아지와 함께하는 따뜻한 조용한 시간을 사랑합니다."
+        ]
+      },
+      "ENFP": {
+        title: "인간 비타민 [에너지왕 골든 리트리버] 🦮",
+        img: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=500&q=80",
+        desc: [
+          "• 언제 어디서나 밝고 긍정적인 에너지를 내뿜습니다!",
+          "• 누구와도 금방 친해지는 리액션 대장이기도 합니다.",
+          "• 강아지와 매일 새로운 신나는 모험을 즐깁니다."
+        ]
+      },
+      "ISTJ": {
+        title: "은근히 다정한 [차분한 시바견] 🐕",
+        img: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=500&q=80",
+        desc: [
+          "• 과한 표현은 서툴지만 행동 하나하나로 챙겨주는 스타일입니다.",
+          "• 한결같고 안정적인 환경을 선호합니다.",
+          "• 강아지의 취향을 조용히 지켜보고 챙겨주는 매력이 있습니다."
+        ]
       }
     };
 
-    let currentIdx = 0;
-    let scores = { active: 0, quiet: 0 };
+    let currentQIndex = 0;
+    let scores = { E: 0, I: 0, S: 0, N: 0, F: 0, T: 0, J: 0, P: 0 };
 
-    function startTest() {
-      document.getElementById('start-screen').classList.add('hidden');
-      document.getElementById('quiz-screen').classList.remove('hidden');
-      currentIdx = 0;
-      scores = { active: 0, quiet: 0 };
-      showQuestion();
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
     }
 
-    function showQuestion() {
-      const q = questions[currentIdx];
-      document.getElementById('question-text').innerText = `Q${currentIdx + 1}. ${q.q}`;
+    function startQuiz() {
+      currentQIndex = 0;
+      scores = { E: 0, I: 0, S: 0, N: 0, F: 0, T: 0, J: 0, P: 0 };
+      showScreen('quiz-screen');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQIndex];
       
-      // 진행바 업데이트
-      const progressPercent = ((currentIdx) / questions.length) * 100;
-      document.getElementById('progress').style.width = `${progressPercent}%`;
-
-      const optionsDiv = document.getElementById('options-container');
-      optionsDiv.innerHTML = '';
-
-      q.options.forEach(opt => {
+      const progressPercent = ((currentQIndex) / questions.length) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+      
+      document.getElementById('q-number').innerText = `Q${currentQIndex + 1}.`;
+      document.getElementById('q-text').innerText = q.q;
+      
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+      
+      q.a.forEach(opt => {
         const btn = document.createElement('button');
-        btn.className = 'btn option-btn';
+        btn.className = 'option-btn';
         btn.innerText = opt.text;
         btn.onclick = () => selectOption(opt.type);
-        optionsDiv.appendChild(btn);
+        optionsContainer.appendChild(btn);
       });
     }
 
     function selectOption(type) {
       scores[type]++;
-      currentIdx++;
+      currentQIndex++;
 
-      if (currentIdx < questions.length) {
-        showQuestion();
+      if (currentQIndex < questions.length) {
+        renderQuestion();
       } else {
-        showResult();
+        showLoading();
       }
     }
 
-    function showResult() {
-      document.getElementById('quiz-screen').classList.add('hidden');
-      document.getElementById('result-screen').classList.remove('hidden');
-
-      const resultType = scores.active >= scores.quiet ? 'active' : 'quiet';
-      const res = results[resultType];
-
-      document.getElementById('result-title').innerText = res.title;
-      document.getElementById('result-desc').innerText = res.desc;
-      document.getElementById('result-img').src = res.img;
+    function showLoading() {
+      showScreen('loading-screen');
+      setTimeout(() => {
+        calcResult();
+      }, 1500);
     }
 
-    function restartTest() {
-      document.getElementById('result-screen').classList.add('hidden');
-      document.getElementById('start-screen').classList.remove('hidden');
+    function calcResult() {
+      let mbti = "";
+      mbti += scores.E >= scores.I ? "E" : "I";
+      mbti += scores.S >= scores.N ? "S" : "N";
+      mbti += scores.T >= scores.F ? "T" : "F";
+      mbti += scores.J >= scores.P ? "J" : "P";
+
+      const resultData = results[mbti] || (mbti.includes("E") ? results["ENFP"] : results["INFP"]);
+
+      document.getElementById('result-title').innerText = resultData.title;
+      document.getElementById('result-img').src = resultData.img;
+      
+      const descContainer = document.getElementById('result-desc');
+      descContainer.innerHTML = '';
+      resultData.desc.forEach(pText => {
+        const p = document.createElement('p');
+        p.innerText = pText;
+        descContainer.appendChild(p);
+      });
+
+      showScreen('result-screen');
+    }
+
+    function restartQuiz() {
+      showScreen('start-screen');
+    }
+
+    function shareResult() {
+      const dummy = document.createElement('input');
+      document.body.appendChild(dummy);
+      dummy.value = window.location.href;
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+      alert('테스트 링크가 복사되었습니다! 친구들에게 공유해 보세요 🐾');
     }
   </script>
 </body>
