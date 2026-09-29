@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 멍냥 성격 테스트</title>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --primary-hover: #5b4bc4;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #2d3436;
+      --sub-text: #636e72;
+      --border-color: #dfe6e9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 30px 20px;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* Start Screen */
+    .test-badge {
+      background: #eef0fd;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      word-break: keep-all;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--sub-text);
+      margin-bottom: 25px;
+      word-break: keep-all;
+    }
+
+    .main-img {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background-color: var(--primary);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: #f1f2f6;
+      color: var(--text-color);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e4e7eb;
+    }
+
+    /* Quiz Screen */
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background-color: #edf2f7;
+      border-radius: 4px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .q-number {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .q-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 35px;
+      word-break: keep-all;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 18px 15px;
+      margin-bottom: 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      background: white;
+      font-size: 0.95rem;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      word-break: keep-all;
+      line-height: 1.3;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background-color: #f8f7ff;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Loading Screen */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 30px 0;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Result Screen */
+    .result-tag {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+    }
+
+    .result-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .result-img {
+      width: 100%;
+      max-width: 220px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .desc-box {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 25px;
+      width: 100%;
+    }
+
+    .desc-box p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #4a5568;
+      margin-bottom: 10px;
+      word-break: keep-all;
+    }
+
+    .desc-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn-group {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+      <span class="test-badge">TEST IT STYLE</span>
+      <h1 class="title">나의 멍냥 성격 테스트</h1>
+      <p class="subtitle">12가지 상황 질문을 통해 알아보는<br>나와 닮은 동물 성격 유형!</p>
+      <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="메인 이미지" class="main-img">
+      <button class="btn" onclick="startQuiz()">테스트 시작하기</button>
+    </div>
+
+    <!-- 2. 질문 화면 -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="q-number" class="q-number">Q1.</div>
+      <div id="q-text" class="q-text">질문이 들어갈 자리입니다.</div>
+      <div id="options-container" style="width: 100%;">
+        <!-- 선택지 버튼들이 자바스크립트로 생성됩니다 -->
+      </div>
+    </div>
+
+    <!-- 3. 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <h2 style="font-size: 1.2rem; font-weight: 700;">결과 분석 중...</h2>
+      <p style="color: var(--sub-text); margin-top: 8px; font-size: 0.9rem;">당신의 성격 유형을 열심히 찾고 있어요!</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div id="result-tag" class="result-tag">당신의 유형은?</div>
+      <h1 id="result-title" class="result-title">결과 제목</h1>
+      <img id="result-img" src="" alt="결과 이미지" class="result-img">
+      <div class="desc-box" id="result-desc">
+        <!-- 결과 설명 텍스트가 표시됩니다 -->
+      </div>
+      <div class="btn-group">
+        <button class="btn" onclick="shareResult()">결과 공유하기</button>
+        <button class="btn btn-secondary" onclick="restartQuiz()">다시 테스트하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 외부 자바스크립트 파일 연결 -->
+  <script src="script.js"></script>
+</body>
+</html>
