@@ -3,207 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>테스트잇 - 심리테스트 모음</title>
+  <title>네트워크.gg - IQ & 심리테스트 Lab</title>
   <style>
+    :root {
+      --primary-color: #6c5ce7;
+      --secondary-color: #a29bfe;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #2d3436;
+      --text-sub: #636e72;
+      --accent-color: #ff7675;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Pretendard', sans-serif, -apple-system;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     }
 
     body {
-      background-color: #fdf2f4; /* 옅은 핑크 배경 */
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-main);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 20px 10px;
+      padding: 24px 16px;
     }
 
-    /* 상단 네비게이션 / 카테고리 */
+    /* GNB 상단 헤더 */
     header {
       width: 100%;
-      max-width: 800px;
+      max-width: 860px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0 20px 0;
+      padding-bottom: 24px;
     }
 
-    .logo {
-      font-weight: bold;
-      color: #ff6b81;
-      font-size: 1.2rem;
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
 
-    .category-btns {
+    .nav-tags {
       display: flex;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .cat-btn {
-      background-color: #d8b4e2;
-      color: white;
-      border: none;
-      padding: 5px 12px;
-      border-radius: 15px;
-      font-size: 0.8rem;
+    .tag-item {
+      background-color: #ffffff;
+      color: var(--text-sub);
+      border: 1px solid #dfe6e9;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    /* 메인 대표 비주얼 배너 */
-    .hero-banner {
-      width: 100%;
-      max-width: 800px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    .tag-item:hover, .tag-item.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-color: var(--primary-color);
     }
 
-    .hero-banner img {
+    /* 히어로 섹션 (메인 비주얼) */
+    .hero-section {
       width: 100%;
-      display: block;
-      object-fit: cover;
+      max-width: 860px;
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      border-radius: 20px;
+      padding: 40px 30px;
+      color: white;
+      text-align: center;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2);
     }
 
-    /* 검색창 */
-    .search-box {
+    .hero-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* 검색 바 */
+    .search-wrapper {
       width: 100%;
-      max-width: 450px;
-      margin-bottom: 30px;
+      max-width: 500px;
+      margin-bottom: 36px;
+      position: relative;
     }
 
     .search-input {
       width: 100%;
-      padding: 10px 20px;
-      border-radius: 20px;
-      border: 1px solid #e0c0d0;
+      padding: 14px 24px;
+      border-radius: 30px;
+      border: 2px solid #e2e8f0;
+      font-size: 0.9rem;
       outline: none;
-      text-align: center;
-      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      transition: border-color 0.2s ease;
       background-color: white;
     }
 
-    /* 테스트 목록 그리드 레이아웃 */
-    .test-grid {
+    .search-input:focus {
+      border-color: var(--primary-color);
+    }
+
+    /* 콘텐츠 그리드 */
+    .grid-container {
       width: 100%;
-      max-width: 800px;
+      max-width: 860px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
 
-    /* 테스트 카드 스타일 */
-    .test-card {
-      background-color: white;
-      border-radius: 10px;
+    /* 카드 컴포넌트 */
+    .quiz-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+      border: 1px solid #edf2f7;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.2s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
       display: flex;
       flex-direction: column;
     }
 
-    .test-card:hover {
-      transform: translateY(-4px);
+    .quiz-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
     }
 
-    .card-img-wrapper {
+    .thumbnail-box {
       width: 100%;
-      height: 140px;
-      background-color: #eee;
+      height: 150px;
       overflow: hidden;
+      position: relative;
     }
 
-    .card-img-wrapper img {
+    .thumbnail-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .card-content {
-      padding: 12px 15px;
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .card-badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      color: #e84118;
-      background-color: #fbecec;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-bottom: 6px;
+    .category-badge {
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      background-color: #f0edff;
+      padding: 4px 8px;
+      border-radius: 6px;
     }
 
     .card-title {
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: #222;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-main);
+    }
+
+    .card-footer {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--text-sub);
     }
   </style>
 </head>
 <body>
 
-  <!-- 헤더 영역 -->
+  <!-- 상단 헤더 -->
   <header>
-    <div class="logo">테스트잇 ♥</div>
-    <div class="category-btns">
-      <button class="cat-btn">성격</button>
-      <button class="cat-btn">얼굴</button>
-      <button class="cat-btn">그외</button>
-      <button class="cat-btn">사주</button>
+    <div class="brand-logo">네트워크.gg LAB</div>
+    <div class="nav-tags">
+      <button class="tag-item active">전체</button>
+      <button class="tag-item">성격</button>
+      <button class="tag-item">연애</button>
+      <button class="tag-item">사주/궁합</button>
     </div>
   </header>
 
-  <!-- 메인 대표 이미지 배너 -->
-  <div class="hero-banner">
-    <!-- 이미지 주소는 원하시는 배너 이미지로 교체하시면 됩니다 -->
-    <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1000&q=80" alt="테스트잇 대표 배너">
+  <!-- 히어로 메인 세션 -->
+  <div class="hero-section">
+    <div class="hero-title">나를 알아가는 심리테스트 🧠</div>
+    <div class="hero-desc">간단한 문항을 통해 나의 성격 유형과 심리 상태를 확인해 보세요.</div>
   </div>
 
   <!-- 검색창 -->
-  <div class="search-box">
-    <input type="text" class="search-input" placeholder="찾고 싶은 테스트를 검색하세요 (예: 연애, 성격)">
+  <div class="search-wrapper">
+    <input type="text" class="search-input" placeholder="궁금한 심리테스트를 검색해 보세요...">
   </div>
 
-  <!-- 테스트 그리드 목록 -->
-  <div class="test-grid">
+  <!-- 카드 목록 그리드 -->
+  <div class="grid-container">
     
-    <!-- 1. 종합평가 테스트 카드 -->
-    <a href="test-comprehensive.html" class="test-card">
-      <div class="card-img-wrapper">
+    <!-- 카드 1: 종합 평가 테스트 -->
+    <a href="test-comprehensive.html" class="quiz-card">
+      <div class="thumbnail-box">
         <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=500&q=80" alt="종합 평가 테스트">
       </div>
-      <div class="card-content">
-        <span class="card-badge">나BTI</span>
+      <div class="card-body">
+        <span class="category-badge">성격 분석</span>
         <div class="card-title">나BTI 종합 평가 테스트</div>
+        <div class="card-footer">⏱️ 소요시간 약 2분</div>
       </div>
     </a>
 
-    <!-- 2. 연애 테스트 카드 -->
-    <a href="test-love.html" class="test-card">
-      <div class="card-img-wrapper">
+    <!-- 카드 2: 연애 테스트 -->
+    <a href="test-love.html" class="quiz-card">
+      <div class="thumbnail-box">
         <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트">
       </div>
-      <div class="card-content">
-        <span class="card-badge">연애</span>
-        <div class="card-title">사주 떡찰떡 연애 테스트</div>
+      <div class="card-body">
+        <span class="category-badge">연애/궁합</span>
+        <div class="card-title">사주 떡찰떡 연애 심리 테스트</div>
+        <div class="card-footer">⏱️ 소요시간 약 3분</div>
       </div>
     </a>
 
-    <!-- 3. 자아찾기 모의고사 테스트 카드 -->
-    <a href="#" class="test-card">
-      <div class="card-img-wrapper">
+    <!-- 카드 3: 자아찾기 테스트 -->
+    <a href="#" class="quiz-card">
+      <div class="thumbnail-box">
         <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=500&q=80" alt="자아찾기 테스트">
       </div>
-      <div class="card-content">
-        <span class="card-badge">모의고사</span>
+      <div class="card-body">
+        <span class="category-badge">자아 탐색</span>
         <div class="card-title">자아찾기 모의고사 테스트</div>
+        <div class="card-footer">⏱️ 소요시간 약 2분</div>
       </div>
     </a>
 
