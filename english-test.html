@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>초등 필수 영어 상식 퀴즈 🔤 - 네트워크.gg</title>
+  <style>
+    :root {
+      --primary-color: #00b894;
+      --primary-hover: #00bec9;
+      --bg-color: #f7fbf9;
+      --card-bg: #ffffff;
+      --text-color: #2d3436;
+      --sub-text: #636e72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;**[맞춤법 교정 및 발음]**
+* **작성하신 표현**: "**완성형 주제 초등영어로 코드를 작성해줘**"
+* **올바른 표현**: "**완성형 주제 '초등영어 상식' 코드를 작성해 줘**" (띄어쓰기 및 문장 부호)
+* **표준 발음**: [완성형 주제 초등영어 상식 코드를 작성해 줘]
+
+---
+
+초등학생 수준의 기본 영단어와 표현을 맞히는 **'초등영어 상식 퀴즈 12문항'** 단일 파일(`english-test.html`) 완성형 코드입니다.
+
+테스트잇 스타일의 진행률 바, 로딩 애니메이션, 그리고 정답 개수(점수)에 따른 4가지 등급별 결과 카드가 포함되어 있습니다.
+
+아래 전체 코드를 복사해서 **`english-test.html`**로 저장하신 후 실행해 보세요!
+
+---
+
+### 📄 `english-test.html` 단일 파일 전체 코드
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>초등 필수 영어 상식 퀴즈 🔤 - 네트워크.gg</title>
+  <style>
+    :root {
+      --primary-color: #00cec9;
+      --primary-hover: #00b894;
+      --bg-color: #f7f9fa;
+      --card-bg: #ffffff;
+      --text-color: #2d3436;
+      --sub-text: #636e72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 12px 30px rgba(0, 206, 201, 0.15);
+      text-align: center;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* 시작 화면 */
+    .badge {
+      display: inline-block;
+      background-color: #e6faf9;
+      color: #00b894;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #2d3436;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--sub-text);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .banner-box {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(0, 206, 201, 0.2);
+    }
+
+    .banner-icon {
+      font-size: 4.5rem;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 206, 201, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-sub {
+      background-color: #f0f0f0;
+      color: var(--text-color);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+
+    .btn-sub:hover {
+      background-color: #e0e0e0;
+      transform: none;
+    }
+
+    /* 진행 바 */
+    .progress-wrapper {
+      width: 100%;
+      background-color: #eee;
+      height: 10px;
+      border-radius: 5px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #81ecec, #00b894);
+      transition: width 0.3s ease;
+    }
+
+    /* 질문 화면 */
+    .q-number {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #00b894;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      line-height: 1.45;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .option-btn {
+      padding: 18px 16px;
+      border: 2px solid #e6faf9;
+      border-radius: 14px;
+      background: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      background-color: #f0fdfc;
+      transform: translateY(-2px);
+    }
+
+    /* 로딩 화면 */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 40px auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    /* 결과 화면 */
+    .result-score {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #00b894;
+      margin-bottom: 6px;
+    }
+
+    .result-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .result-card {
+      background: #f0fdfc;
+      border: 2px dashed #81ecec;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .result-tag {
+      display: inline-block;
+      background: #e6faf9;
+      color: #00b894;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-right: 6px;
+      margin-bottom: 12px;
+    }
+
+    .result-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #34495e;
+    }
+
+    .result-desc li {
+      margin-bottom: 8px;
+      list-style-type: '✏️ ';
+      margin-left: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+      <span class="badge">초등 필수 어휘 & 표현</span>
+      <h1 class="title">초등 필수 영어<br>상식 퀴즈 🔤</h1>
+      <p class="subtitle">12개의 재미있는 기초 영어 문제를 풀고<br>나의 영어 실력 등급을 확인해 보세요!</p>
+      
+      <div class="banner-box">
+        <div class="banner-icon">🔤</div>
+        <div style="font-size: 1.1rem; font-weight: 700;">내 영어 실력은 몇 점일까?</div>
+      </div>
+
+      <button class="btn" onclick="startQuiz()">퀴즈 시작하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 돌아가기</button>
+    </div>
+
+    <!-- 2. 퀴즈 화면 -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-wrapper">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="q-number" class="q-number">QUESTION 01/12</div>
+      <div id="q-text" class="q-text">질문 내용이 들어갑니다.</div>
+      <div id="options-container" class="options-container">
+        <!-- 선택지 자동 생성 -->
+      </div>
+    </div>
+
+    <!-- 3. 분석 중 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <p class="loading-text">퀴즈 결과를 채점하고 있습니다...</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div class="result-score" id="result-score">12문제 중 0문제 정답</div>
+      <h2 class="result-title" id="result-title">결과 타이틀</h2>
+      
+      <div class="result-card">
+        <div id="result-tags">
+          <span class="result-tag">#태그1</span>
+          <span class="result-tag">#태그2</span>
+        </div>
+        <ul id="result-desc" class="result-desc">
+          <!-- 설명 자동 삽입 -->
+        </ul>
+      </div>
+
+      <button class="btn" onclick="shareResult()">결과 링크 복사하기</button>
+      <button class="btn btn-sub" onclick="restartQuiz()">다시 테스트하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 이동</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 12개 초등 영어 상식 질문 데이터
+    const questions = [
+      {
+        q: "1. '사과'를 뜻하는 단어로 올바른 것은?",
+        a: [
+          { text: "Apple", isCorrect: true },
+          { text: "Banana", isCorrect: false },
+          { text: "Orange", isCorrect: false }
+        ]
+      },
+      {
+        q: "2. 'Good morning'은 언제 나누는 인사일까요?",
+        a: [
+          { text: "저녁에 만났을 때", isCorrect: false },
+          { text: "아침에 만났을 때", isCorrect: true },
+          { text: "잠들기 직전에", isCorrect: false }
+        ]
+      },
+      {
+        q: "3. 요일 중 'Sunday'가 뜻하는 날은?",
+        a: [
+          { text: "토요일", isCorrect: false },
+          { text: "월요일", isCorrect: false },
+          { text: "일요일", isCorrect: true }
+        ]
+      },
+      {
+        q: "4. 숫자를 영어로 셀 때 'Five' 다음 숫자는?",
+        a: [
+          { text: "Four", isCorrect: false },
+          { text: "Six", isCorrect: true },
+          { text: "Seven", isCorrect: false }
+        ]
+      },
+      {
+        q: "5. '도서관'을 뜻하는 영단어는 무엇일까요?",
+        a: [
+          { text: "School", isCorrect: false },
+          { text: "Hospital", isCorrect: false },
+          { text: "Library", isCorrect: true }
+        ]
+      },
+      {
+        q: "6. 고양이(Cat)의 새끼나 귀여운 표현으로 쓰이는 단어는?",
+        a: [
+          { text: "Puppy", isCorrect: false },
+          { text: "Kitten", isCorrect: true },
+          { text: "Chick", isCorrect: false }
+        ]
+      },
+      {
+        q: "7. 'How are you?'라는 질문에 대한 답으로 알맞은 것은?",
+        a: [
+          { text: "I'm fine, thank you.", isCorrect: true },
+          { text: "Nice to meet you.", isCorrect: false },
+          { text: "My name is Tom.", isCorrect: false }
+        ]
+      },
+      {
+        q: "8. 계절 중 '여름'을 뜻하는 영어 단어는?",
+        a: [
+          { text: "Spring", isCorrect: false },
+          { text: "Summer", isCorrect: true },
+          { text: "Winter", isCorrect: false }
+        ]
+      },
+      {
+        q: "9. 'Red'와 'Yellow'를 섞었을 때 나오는 색의 영단어는?",
+        a: [
+          { text: "Green", isCorrect: false },
+          { text: "Purple", isCorrect: false },
+          { text: "Orange", isCorrect: true }
+        ]
+      },
+      {
+        q: "10. '감사합니다'라는 뜻의 표현으로 알맞은 것은?",
+        a: [
+          { text: "I'm sorry.", isCorrect: false },
+          { text: "Thank you.", isCorrect: true },
+          { text: "You're welcome.", isCorrect: false }
+        ]
+      },
+      {
+        q: "11. 'Teacher'가 일하는 장소로 가장 알맞은 곳은?",
+        a: [
+          { text: "School", isCorrect: true },
+          { text: "Park", isCorrect: false },
+          { text: "Bakery", isCorrect: false }
+        ]
+      },
+      {
+        q: "12. 'See you again'의 알맞은 한글 뜻은?",
+        a: [
+          { text: "처음 뵙겠습니다.", isCorrect: false },
+          { text: "또 만나요.", isCorrect: true },
+          { text: "축하합니다.", isCorrect: false }
+        ]
+      }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function startQuiz() {
+      document.getElementById('start-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/12`;
+      document.getElementById('q-text').innerText = q.q;
+      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 12) * 100}%`;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.a.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = answer.text;
+        btn.onclick = () => selectOption(answer.isCorrect);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(isCorrect) {
+      if (isCorrect) {
+        score++;
+      }
+      currentQ++;
+
+      if (currentQ < questions.length) {
+        showQuestion();
+      } else {
+        showLoading();
+      }
+    }
+
+    function showLoading() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('loading-screen').classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.remove('active');
+        showResult();
+      }, 1800);
+    }
+
+    function showResult() {
+      document.getElementById('result-score').innerText = `12문제 중 ${score}문제 정답!`;
+
+      let title = "";
+      let tags = [];
+      let desc = [];
+
+      if (score === 12) {
+        title = "영단어 박사님 🏆";
+        tags = ["#만점자", "#원어민급", "#기초완벽", "#영어천재"];
+        desc = [
+          "초등 필수 영단어와 기초 표현을 완벽하게 마스터하셨습니다!",
+          "탄탄한 기본기를 바탕으로 더 높은 단계의 영어 표현도 도전해 보세요.",
+          "언어적 감각이 매우 뛰어납니다."
+        ];
+      } else if (score >= 9) {
+        title = "참 잘했어요! 🌟";
+        tags = ["#우수한실력", "#기본기탄탄", "#영어어휘왕"],
+        desc = [
+          "대부분의 기초 영어 표현을 잘 이해하고 계시네요!",
+          "헷갈렸던 1~2개 문제만 복습하면 금방 만점에 도달할 수 있습니다.",
+          "꾸준히 단어를 접하면 더욱 빠르게 발전할 것입니다."
+        ];
+      } else if (score >= 5) {
+        title = "아쉬운 쑥쑥이 싹  🌱";
+        tags = ["#발전가능성", "#복습필요", "#연습하면만점"],
+        desc = [
+          "기초적인 단어들을 잘 기억하고 계시지만 약간의 아쉬움이 남습니다.",
+          "자주 쓰이는 기본 회화와 필수 단어를 조금 더 연습해 보세요.",
+          "매일 조금씩 공부하면 금방 실력이 성장할 수 있습니다."
+        ];
+      } else {
+        title = "영어 새싹이 🐥";
+        tags = ["#시작이반", "#기초부터차근차근", "#화이팅"],
+        desc = [
+          "영어와 조금 더 친해지는 시간이 필요해 보입니다!",
+          "쉬운 단어장부터 차근차근 읽어보며 기초를 다져보세요.",
+          "다시 도전하면서 틀린 문제를 복습하면 실력이 쑥쑥 늘어납니다."
+        ];
+      }
+
+      document.getElementById('result-title').innerText = title;
+
+      const tagsContainer = document.getElementById('result-tags');
+      tagsContainer.innerHTML = tags.map(t => `<span class="result-tag">${t}</span>`).join('');
+
+      const descContainer = document.getElementById('result-desc');
+      descContainer.innerHTML = desc.map(d => `<li>${d}</li>`).join('');
+
+      document.getElementById('result-screen').classList.add('active');
+    }
+
+    function restartQuiz() {
+      currentQ = 0;
+      score = 0;
+      document.getElementById('result-screen').classList.remove('active');
+      document.getElementById('start-screen').classList.add('active');
+    }
+
+    function shareResult() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('테스트 링크가 클립보드에 복사되었습니다! 친구들에게 공유해 보세요.');
+      });
+    }
+  </script>
+</body>
+</html>
