@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나와 어울리는 고양이 성격 테스트 🐱 - 네트워크.gg</title>
+  <style>
+    :root {
+      --primary-color: #ff9f43;
+      --primary-hover: #ee5253;
+      --bg-color: #feca5715;
+      --card-bg: #ffffff;
+      --text-color: #2d3436;
+      --sub-text: #8395a7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #f7f9fa;
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 12px 30px rgba(255, 159, 67, 0.15);
+      text-align: center;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* 시작 화면 */
+    .badge {
+      display: inline-block;
+      background-color: #fff0e6;
+      color: #ff9f43;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #333;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--sub-text);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .banner-box {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #ffeaa7 0%, #ff9f43 100%);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(255, 159, 67, 0.2);
+    }
+
+    .banner-icon {
+      font-size: 4.5rem;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255, 159, 67, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-sub {
+      background-color: #f0f0f0;
+      color: var(--text-color);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+
+    .btn-sub:hover {
+      background-color: #e0e0e0;
+      transform: none;
+    }
+
+    /* 진행 바 */
+    .progress-wrapper {
+      width: 100%;
+      background-color: #eee;
+      height: 10px;
+      border-radius: 5px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff9f43, #ff6b6b);
+      transition: width 0.3s ease;
+    }
+
+    /* 질문 화면 */
+    .q-number {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      line-height: 1.45;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .option-btn {
+      padding: 18px 16px;
+      border: 2px solid #fff0e6;
+      border-radius: 14px;
+      background: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      background-color: #fff9f5;
+      transform: translateY(-2px);
+    }
+
+    /* 로딩 화면 */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 40px auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    /* 결과 화면 */
+    .result-element {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+    }
+
+    .result-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .result-card {
+      background: #fffcf9;
+      border: 2px dashed #ffeaa7;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .result-tag {
+      display: inline-block;
+      background: #ffe3d1;
+      color: #d35400;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-right: 6px;
+      margin-bottom: 12px;
+    }
+
+    .result-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #34495e;
+    }
+
+    .result-desc li {
+      margin-bottom: 8px;
+      list-style-type: '🐾 ';
+      margin-left: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+      <span class="badge">반려동물 심리 유형 진단</span>
+      <h1 class="title">나와 어울리는<br>고양이 성격 테스트 🐱</h1>
+      <p class="subtitle">12가지 질문을 통해 나의 성향과 딱 맞는<br>소울메이트 고양이 유형을 찾아보세요!</p>
+      
+      <div class="banner-box">
+        <div class="banner-icon">🐱</div>
+        <div style="font-size: 1.1rem; font-weight: 700;">내 영혼의 냥이는 누구일까?</div>
+      </div>
+
+      <button class="btn" onclick="startQuiz()">테스트 시작하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 돌아가기</button>
+    </div>
+
+    <!-- 2. 퀴즈 화면 -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-wrapper">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="q-number" class="q-number">QUESTION 01/12</div>
+      <div id="q-text" class="q-text">질문 내용이 들어갑니다.</div>
+      <div id="options-container" class="options-container">
+        <!-- 선택지 자동 생성 -->
+      </div>
+    </div>
+
+    <!-- 3. 분석 중 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <p class="loading-text">나와 어울리는 고양이를 찾고 있습니다...</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div class="result-element" id="result-element">나와 궁합 100% 고양이</div>
+      <h2 class="result-title" id="result-title">결과 타이틀</h2>
+      
+      <div class="result-card">
+        <div id="result-tags">
+          <span class="result-tag">#태그1</span>
+          <span class="result-tag">#태그2</span>
+        </div>
+        <ul id="result-desc" class="result-desc">
+          <!-- 설명 자동 삽입 -->
+        </ul>
+      </div>
+
+      <button class="btn" onclick="shareResult()">결과 링크 복사하기</button>
+      <button class="btn btn-sub" onclick="restartQuiz()">다시 테스트하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 이동</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 12개 질문 데이터
+    const questions = [
+      {
+        q: "1. 퇴근 후 집에 도착했을 때 내가 가장 먼저 원하는 행동은?",
+        a: [
+          { text: "아무도 건드리지 않는 정적 속에서 혼자 푹 쉰다.", type: "I" },
+          { text: "가족이나 친구에게 전화해서 있었던 일을 수다 떠는 것이다.", type: "E" }
+        ]
+      },
+      {
+        q: "2. 처음 방문한 카페에서 메뉴를 선택할 때 나는?",
+        a: [
+          { text: "실패 없는 베스트 시그니처나 자주 먹던 음료를 시킨다.", type: "S" },
+          { text: "독특해 보이는 호기심 유발 신메뉴에 도전해 본다.", type: "N" }
+        ]
+      },
+      {
+        q: "3. 친구가 '오늘 회사에서 진짜 힘든 일 있었어'라고 할 때 내 반응은?",
+        a: [
+          { text: "'아이구 어떡해... 진짜 고생 많았어ㅠㅠ'라며 깊이 공감해 준다.", type: "F" },
+          { text: "'무슨 일 있었는데? 상사가 뭐라고 했어?'라며 내막을 파악한다.", type: "T" }
+        ]
+      },
+      {
+        q: "4. 내일 갑자기 휴가를 쓰게 되었을 때 나의 계획은?",
+        a: [
+          { text: "알차게 보낼 시간별 일정표부터 당장 짜기 시작한다.", type: "J" },
+          { text: "내일 아침 일어났을 때 기분에 따라 즉흥적으로 정한다.", type: "P" }
+        ]
+      },
+      {
+        q: "5. 모임에서 새로운 사람들을 다수 만났을 때 나의 태도는?",
+        a: [
+          { text: "상대방이 먼저 말을 걸어올 때까지 조용히 살핀다.", type: "I" },
+          { text: "먼저 인사를 건네고 분위기를 띄우며 친해진다.", type: "E" }
+        ]
+      },
+      {
+        q: "6. 길가에 예쁘고 특이하게 생긴 고양이를 마주쳤을 때 드는 생각은?",
+        a: [
+          { text: "'귀엽다, 털 색깔이 특이하네'라며 눈앞의 모습을 관찰한다.", type: "S" },
+          { text: "'냥이들의 세계엔 비밀 사회가 있지 않을까?' 상상의 나래를 편다.", type: "N" }
+        ]
+      },
+      {
+        q: "7. 내가 누군가에게 마음을 표현할 때 선호하는 방식은?",
+        a: [
+          { text: "따뜻한 말 한마디와 세심한 챙김으로 마음을 표현한다.", type: "F" },
+          { text: "상대에게 실질적으로 도움이 되는 선물이나 해결책을 준다.", type: "T" }
+        ]
+      },
+      {
+        q: "8. 방 안이 조금 어질러져 있을 때 나의 반응은?",
+        a: [
+          { text: "마음이 산만해져서 즉시 원위치로 깔끔하게 정리한다.", type: "J" },
+          { text: "'나중에 치우지 뭐' 하며 딱히 불편함을 느끼지 않는다.", type: "P" }
+        ]
+      },
+      {
+        q: "9. 나에게 있어 최고의 스트레스 해소법은?",
+        a: [
+          { text: "방 안에서 맛있는 걸 먹으며 침대 속에서 영화 보기", type: "I" },
+          { text: "밖으로 나아가 활기찬 장소에서 친구들과 신나게 놀기", type: "E" }
+        ]
+      },
+      {
+        q: "10. 일을 처리할 때 나의 방식은?",
+        a: [
+          { text: "검증된 가이드라인과 정해진 절차를 엄격히 준수한다.", type: "S" },
+          { text: "더 효율적이고 창의적인 새로운 방식을 기획해 본다.", type: "N" }
+        ]
+      },
+      {
+        q: "11. 결정을 내려야 할 때 나에게 더 중요한 기준은?",
+        a: [
+          { text: "주변 사람들과의 관계와 마음의 편안함", type: "F" },
+          { text: "객관적인 사실과 논리적 타당성", type: "T" }
+        ]
+      },
+      {
+        q: "12. 약속 장소에 나갈 때 나의 행동은?",
+        a: [
+          { text: "출발 시간과 대중교통 시간을 고려해 여유 있게 도착한다.", type: "J" },
+          { text: "준비하다 보니 항상 딱 맞춰 가거나 살짝 늦는 편이다.", type: "P" }
+        ]
+      }
+    ];
+
+    // 결과 데이터 (4가지 고양이 유형)
+    const results = {
+      I_F: {
+        element: "우아하고 차분한 소울메이트",
+        title: "도도한 페르시안 👑",
+        tags: ["#차분함", "#세심함", "#조용한애정", "#집돌이집순이"],
+        desc: [
+          "혼자만의 고요한 시간을 즐기며 깊고 세심한 감성을 지닌 성향입니다.",
+          "겉으로는 조금 도도해 보일 수 있지만, 내 사람에게는 세상 따뜻한 애교쟁이입니다.",
+          "시끄러운 공간보다 조용하고 아늑한 공간에서 에너지를 회복합니다.",
+          "당신과 마음을 천천히 나누며 함께 힐링할 수 있는 소울메이트입니다."
+        ]
+      },
+      E_F: {
+        element: "애교 폭발 명랑주의자",
+        title: "개냥이 샴 (Siamese) 🐾",
+        tags: ["#수다쟁이", "#애교폭발", "#친화력갑", "#사랑둥이"],
+        desc: [
+          "사람을 좋아하고 밝은 에너지가 넘치는 친화력 만렙 성향입니다.",
+          "자신의 감정을 솔직하게 표현하며 통통 튀는 매력으로 주변을 밝게 만듭니다.",
+          "혼자 있는 것보다 관심과 사랑을 주고받을 때 큰 행복을 느낍니다.",
+          "당신의 하루를 항상 반겨주며 기분 좋은 활력을 불어넣어 줄 존재입니다."
+        ]
+      },
+      I_T: {
+        element: "독립적인 지능형 모험가",
+        title: "시크한 코리안 숏헤어 🐾",
+        tags: ["#독립심", "#시크함", "#관찰력", "#자기주관"],
+        desc: [
+          "주관이 뚜렷하고 혼자서도 척척 문제를 해결해 내는 시크한 성향입니다.",
+          "감정에 휘둘리기보다는 냉철하게 상황을 판단하고 관찰하는 것을 잘합니다.",
+          "불필요한 구속을 싫어하며 자신만의 영역과 기준이 명확합니다.",
+          "서로의 개인 시간을 존중하면서 든든한 파트너가 되어줄 고양이입니다."
+        ]
+      },
+      E_T: {
+        element: "열정 넘치는 에너자이저",
+        title: "호기심 많은 뱅갈 (Bengal) 🐆",
+        tags: ["#활동가", "#호기심천국", "#리더십", "#에너자이저"],
+        desc: [
+          "에너지가 넘치고 정열적이며 새로운 도전을 두려워하지 않는 성향입니다.",
+          "목표가 생기면 과감하고 빠르게 실행에 옮기는 적극성을 가지고 있습니다.",
+          "지루한 것을 참지 못하며 솔직하고 당당한 태도로 분위기를 주도합니다.",
+          "당신과 함께 끊임없이 재미있는 일들을 찾아 나설 최고의 콤비입니다."
+        ]
+      }
+    };
+
+    let currentQ = 0;
+    let scores = { E: 0, I: 0, S: 0, N: 0, F: 0, T: 0, J: 0, P: 0 };
+
+    function startQuiz() {
+      document.getElementById('start-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/12`;
+      document.getElementById('q-text').innerText = q.q;
+      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 12) * 100}%`;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.a.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = answer.text;
+        btn.onclick = () => selectOption(answer.type);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(type) {
+      scores[type]++;
+      currentQ++;
+
+      if (currentQ < questions.length) {
+        showQuestion();
+      } else {
+        showLoading();
+      }
+    }
+
+    function showLoading() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('loading-screen').classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.remove('active');
+        showResult();
+      }, 1800);
+    }
+
+    function showResult() {
+      const extraversion = scores.E >= scores.I ? 'E' : 'I';
+      const feeling = scores.F >= scores.T ? 'F' : 'T';
+      const resultKey = `${extraversion}_${feeling}`;
+
+      const res = results[resultKey];
+
+      document.getElementById('result-element').innerText = res.element;
+      document.getElementById('result-title').innerText = res.title;
+
+      const tagsContainer = document.getElementById('result-tags');
+      tagsContainer.innerHTML = res.tags.map(t => `<span class="result-tag">${t}</span>`).join('');
+
+      const descContainer = document.getElementById('result-desc');
+      descContainer.innerHTML = res.desc.map(d => `<li>${d}</li>`).join('');
+
+      document.getElementById('result-screen').classList.add('active');
+    }
+
+    function restartQuiz() {
+      currentQ = 0;
+      scores = { E: 0, I: 0, S: 0, N: 0, F: 0, T: 0, J: 0, P: 0 };
+      document.getElementById('result-screen').classList.remove('active');
+      document.getElementById('start-screen').classList.add('active');
+    }
+
+    function shareResult() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('테스트 링크가 클립보드에 복사되었습니다! 친구들에게 공유해 보세요.');
+      });
+    }
+  </script>
+</body>
+</html>
