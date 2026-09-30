@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나만의 성격 컬러 테스트 🎨 - 네트워크.gg</title>
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --primary-hover: #2980b9;
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-color: #2c3e50;
+      --sub-text: #7f8c8d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 12px 30px rgba(52, 152, 219, 0.12);
+      text-align: center;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* 시작 화면 */
+    .badge {
+      display: inline-block;
+      background-color: #e8f4fc;
+      color: var(--primary-color);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--primary-color);
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--sub-text);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .banner-box {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #2c3e50;
+      margin-bottom: 24px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+    }
+
+    .banner-icon {
+      font-size: 4rem;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-sub {
+      background-color: #f0f0f0;
+      color: var(--text-color);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+
+    .btn-sub:hover {
+      background-color: #e0e0e0;
+      transform: none;
+    }
+
+    /* 진행 바 */
+    .progress-wrapper {
+      width: 100%;
+      background-color: #eee;
+      height: 10px;
+      border-radius: 5px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+      transition: width 0.3s ease;
+    }
+
+    /* 질문 화면 */
+    .q-number {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      line-height: 1.45;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .option-btn {
+      padding: 18px 16px;
+      border: 2px solid #e8f4fc;
+      border-radius: 14px;
+      background: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      background-color: #f4f9fd;
+      transform: translateY(-2px);
+    }
+
+    /* 로딩 화면 */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 40px auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    /* 결과 화면 */
+    .result-element {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+    }
+
+    .result-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .result-card {
+      background: #fafcfd;
+      border: 2px dashed #d6eaf8;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .result-tag {
+      display: inline-block;
+      background: #eee;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-right: 6px;
+      margin-bottom: 12px;
+    }
+
+    .result-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #34495e;
+    }
+
+    .result-desc li {
+      margin-bottom: 8px;
+      list-style-type: '🎨 ';
+      margin-left: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+      <span class="badge">성격 유형 심리 진단</span>
+      <h1 class="title">나의 성격 컬러<br>테스트 🎨</h1>
+      <p class="subtitle">12가지 간단한 질문을 통해 나의 숨겨진 성격과<br>나를 나타내는 퍼스널 컬러를 찾아보세요!</p>
+      
+      <div class="banner-box">
+        <div class="banner-icon">🌈</div>
+        <div style="font-size: 1.1rem; font-weight: 700;">내 마음의 대표 색상은?</div>
+      </div>
+
+      <button class="btn" onclick="startQuiz()">테스트 시작하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 돌아가기</button>
+    </div>
+
+    <!-- 2. 퀴즈 화면 -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-wrapper">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="q-number" class="q-number">QUESTION 01/12</div>
+      <div id="q-text" class="q-text">질문 내용이 들어갑니다.</div>
+      <div id="options-container" class="options-container">
+        <!-- 선택지 자동 생성 -->
+      </div>
+    </div>
+
+    <!-- 3. 분석 중 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <p class="loading-text">당신의 성격 유형을 분석하고 있습니다...</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div class="result-element" id="result-element">나의 성격 컬러</div>
+      <h2 class="result-title" id="result-title">결과 타이틀</h2>
+      
+      <div class="result-card">
+        <div id="result-tags">
+          <span class="result-tag">#태그1</span>
+          <span class="result-tag">#태그2</span>
+        </div>
+        <ul id="result-desc" class="result-desc">
+          <!-- 설명 자동 삽입 -->
+        </ul>
+      </div>
+
+      <button class="btn" onclick="shareResult()">결과 링크 복사하기</button>
+      <button class="btn btn-sub" onclick="restartQuiz()">다시 테스트하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 이동</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 12개 질문 데이터 (E/I, N/S, F/T, J/P 조합 매칭)
+    const questions = [
+      {
+        q: "1. 주말에 약속이 없을 때 나는?",
+        a: [
+          { text: "집에서 혼자 약을 충전하며 보낸다.", type: "I" },
+          { text: "심심해서 친구들에게 먼저 연락해 모임을 만든다.", type: "E" }
+        ]
+      },
+      {
+        q: "2. 신제품이나 새로운 서비스를 접할 때 나는?",
+        a: [
+          { text: "사용 후기나 구체적인 사양을 먼저 꼼꼼히 확인한다.", type: "S" },
+          { text: "어떤 혁신적인 변화를 만들어낼지 독창적 가능성을 상상한다.", type: "N" }
+        ]
+      },
+      {
+        q: "3. 친구가 '나 우울해서 옷 샀어'라고 할 때 나의 반응은?",
+        a: [
+          { text: "'무슨 일 있어? 무슨 옷 샀어?'라며 감정에 공감해 준다.", type: "F" },
+          { text: "'어떤 옷 샀는데? 얼마 주고 샀어?'라며 상황에 집중한다.", type: "T" }
+        ]
+      },
+      {
+        q: "4. 여행을 떠나기 전 나의 스타일은?",
+        a: [
+          { text: "시간대별 이동 동선과 맛집 리스트를 구체적으로 계획한다.", type: "J" },
+          { text: "큰 목적지만 정해두고 그날 기분에 따라 발길 닿는 대로 움직인다.", type: "P" }
+        ]
+      },
+      {
+        q: "5. 여러 사람이 모인 정기 모임에서 나의 모습은?",
+        a: [
+          { text: "조용히 들어주며 필요한 순간에 의견을 낸다.", type: "I" },
+          { text: "분위기를 밝게 주도하며 적극적으로 입담을 발휘한다.", type: "E" }
+        ]
+      },
+      {
+        q: "6. 문제를 해결할 때 내가 더 중요하게 여기는 것은?",
+        a: [
+          { text: "과거의 경험과 증명된 데이터", type: "S" },
+          { text: "직관적인 아이디어와 미래 가능성", type: "N" }
+        ]
+      },
+      {
+        q: "7. 누군가 나에게 조언을 구할 때 나의 방식은?",
+        a: [
+          { text: "따뜻한 위로와 응원으로 마음을 먼저 다독여 준다.", type: "F" },
+          { text: "냉철한 상황 분석과 현실적인 해결책을 제시해 준다.", type: "T" }
+        ]
+      },
+      {
+        q: "8. 방 청소나 책상 정리를 할 때 나의 스타일은?",
+        a: [
+          { text: "물건들의 위치가 딱 정해져 있어야 마음이 편하다.", type: "J" },
+          { text: "필요할 때 치우거나 어질러져 있어도 작업에 지장이 없다.", type: "P" }
+        ]
+      },
+      {
+        q: "9. 나에게 에너지가 충전되는 순간은?",
+        a: [
+          { text: "조용한 공간에서 나만의 시간을 가질 때", type: "I" },
+          { text: "사람들과 어울려 활발하게 대화할 때", type: "E" }
+        ]
+      },
+      {
+        q: "10. 영화나 소설을 볼 때 나의 몰입 방식은?",
+        a: [
+          { text: "등장인물의 행동과 시각적인 연출에 집중한다.", type: "S" },
+          { text: "작품에 숨겨진 복선과 결말 이후의 이야기를 상상한다.", type: "N" }
+        ]
+      },
+      {
+        q: "11. 결정을 내릴 때 내가 더 크게 고려하는 것은?",
+        a: [
+          { text: "주변 사람들과의 관계와 마음의 만족도", type: "F" },
+          { text: "논리적인 타당성과 공정한 기준", type: "T" }
+        ]
+      },
+      {
+        q: "12. 마감 기한이 있는 과제나 프로젝트를 할 때 나는?",
+        a: [
+          { text: "여유 있게 미리미리 일정을 나누어 완성한다.", type: "J" },
+          { text: "마감 직전 폭발적인 집중력으로 한 번에 처리한다.", type: "P" }
+        ]
+      }
+    ];
+
+    // 결과 데이터 (4가지 성격 컬러 유형)
+    const results = {
+      E_F: {
+        element: "비타민 같은 에너지",
+        title: "따뜻한 옐로우 (Yellow) 💛",
+        tags: ["#인싸력", "#공감왕", "#밝은에너지", "#분위기메이커"],
+        desc: [
+          "주변 사람들에게 긍정적인 에너지를 전하는 밝고 따뜻한 성격입니다.",
+          "타인의 감정을 잘 이해하고 공감 능력이 뛰어나 주변에 사람이 많습니다.",
+          "새로운 사람과의 만남을 즐기며 모임의 분위기를 유쾌하게 만듭니다.",
+          "가끔은 타인의 시선에서 벗어나 스스로를 돌보는 시간이 필요합니다."
+        ]
+      },
+      E_T: {
+        element: "열정적인 지도자",
+        title: "강렬한 레드 (Red) ❤️",
+        tags: ["#추진력", "#리더십", "#솔직담백", "#목표지향"],
+        desc: [
+          "명확한 목표 의식과 강력한 추진력을 가진 성격입니다.",
+          "문제 해결에 있어 객관적이고 논리적인 판단을 신속하게 내립니다.",
+          "자신감이 넘치며 어떤 일에든 주도적으로 앞장서서 이끄는 편입니다.",
+          "상대방의 감정을 조금 더 배려하면 더욱 완벽한 리더가 될 수 있습니다."
+        ]
+      },
+      I_F: {
+        element: "세심한 감성주의자",
+        title: "차분한 핑크 (Pink) 🩷",
+        tags: ["#배려심", "#섬세함", "#평화주의자", "#경청의달인"],
+        desc: [
+          "조용하지만 세심하고 따뜻한 마음씨를 지닌 성격입니다.",
+          "갈등을 싫어하며 주변 사람들의 마음을 꼼꼼하게 살피고 배려합니다.",
+          "혼자만의 시간에 예술적 감성이나 깊은 생각을 발전시키는 것을 좋아합니다.",
+          "자신의 주장이나 거절의 의사를 조금 더 명확히 표현하는 연습이 도움이 됩니다."
+        ]
+      },
+      I_T: {
+        element: "냉철한 전략가",
+        title: "깊은 블루 (Blue) 💙",
+        tags: ["#완벽주의", "#통찰력", "#논리적", "#지적호기심"],
+        desc: [
+          "신중하고 냉철한 시각으로 세상을 바라보는 성격입니다.",
+          "혼자서 몰입하여 문제를 분석하고 최적의 대안을 찾는 것에 강합니다.",
+          "원칙과 약속을 중요하게 생각하며 맡은 일은 끝까지 책임감 있게 해냅니다.",
+          "가끔은 융통성 있는 유연한 태도로 세상을 바라볼 필요가 있습니다."
+        ]
+      }
+    };
+
+    let currentQ = 0;
+    let scores = { E: 0, I: 0, S: 0, N: 0, F: 0, T: 0, J: 0, P: 0 };
+
+    function startQuiz() {
+      document.getElementById('start-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/12`;
+      document.getElementById('q-text').innerText = q.q;
+      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 12) * 100}%`;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.a.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = answer.text;
+        btn.onclick = () => selectOption(answer.type);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(type) {
+      scores[type]++;
+      currentQ++;
+
+      if (currentQ < questions.length) {
+        showQuestion();
+      } else {
+        showLoading();
+      }
+    }
+
+    function showLoading() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('loading-screen').classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.remove('active');
+        showResult();
+      }, 1800);
+    }
+
+    function showResult() {
+      // E/I와 F/T 기준으로 핵심 성격 컬러 결정
+      const extraversion = scores.E >= scores.I ? 'E' : 'I';
+      const feeling = scores.F >= scores.T ? 'F' : 'T';
+      const resultKey = `${extraversion}_${feeling}`;
+
+      const res = results[resultKey];
+
+      document.getElementById('result-element').innerText = res.element;
+      document.getElementById('result-title').innerText = res.title;
+
+      // 태그 설정
+      const tagsContainer = document.getElementById('result-tags');
+      tagsContainer.innerHTML = res.tags.map(t => `<span class="result-tag">${t}</span>`).join('');
+
+      // 설명 설정
+      const descContainer = document.getElementById('result-desc');
+      descContainer.innerHTML = res.desc.map(d => `<li>${d}</li>`).join('');
+
+      document.getElementById('result-screen').classList.add('active');
+    }
+
+    function restartQuiz() {
+      currentQ = 0;
+      scores = { E: 0, I: 0, S: 0, N: 0, F: 0, T: 0, J: 0, P: 0 };
+      document.getElementById('result-screen').classList.remove('active');
+      document.getElementById('start-screen').classList.add('active');
+    }
+
+    function shareResult() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('테스트 링크가 클립보드에 복사되었습니다! 친구들에게 공유해 보세요.');
+      });
+    }
+  </script>
+</body>
+</html>
