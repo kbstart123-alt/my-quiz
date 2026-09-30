@@ -48,6 +48,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: -0.5px;
+      text-decoration: none;
     }
 
     .nav-tags {
@@ -184,7 +185,7 @@
 
   <!-- 헤더 -->
   <header>
-    <div class="brand-logo">네트워크.gg LAB</div>
+    <a href="index.html" class="brand-logo">네트워크.gg LAB</a>
     <div class="nav-tags">
       <button class="tag-item active">전체</button>
       <button class="tag-item">반려동물</button>
@@ -204,7 +205,7 @@
     <input type="text" class="search-input" placeholder="궁금한 심리테스트를 검색해 보세요...">
   </div>
 
-  <!-- 카드 목록 (dog-test.html 파일 연결 완료) -->
+  <!-- 카드 목록 (dog-test.html, love-test.html 연결 완료) -->
   <div class="grid-container">
     
     <!-- 1. 강아지 심리테스트 카드 -->
@@ -215,6 +216,18 @@
       <div class="card-body">
         <span class="category-badge">반려동물</span>
         <div class="card-title">나와 어울리는 강아지 성격 테스트 🐶</div>
+        <div class="card-footer">⏱️ 소요시간 약 2분</div>
+      </div>
+    </a>
+
+    <!-- 2. 연애 심리테스트 카드 -->
+    <a href="love-test.html" class="quiz-card">
+      <div class="thumbnail-box">
+        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트">
+      </div>
+      <div class="card-body">
+        <span class="category-badge" style="background-color: #ffe0e6; color: #ff6b81;">연애</span>
+        <div class="card-title">나의 연애 캐릭터 테스트 💕</div>
         <div class="card-footer">⏱️ 소요시간 약 2분</div>
       </div>
     </a>
