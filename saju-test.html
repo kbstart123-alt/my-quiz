@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 안의 사주 오행 성향 테스트 🔮 - 네트워크.gg</title>
+  <style>
+    :root {
+      --primary-color: #8e44ad;
+      --primary-hover: #9b59b6;
+      --bg-color: #f5f3f9;
+      --card-bg: #ffffff;
+      --text-color: #2c3e50;
+      --sub-text: #7f8c8d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 12px 30px rgba(142, 68, 173, 0.12);
+      text-align: center;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* 시작 화면 */
+    .badge {
+      display: inline-block;
+      background-color: #f3e5f5;
+      color: var(--primary-color);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--primary-color);
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--sub-text);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .banner-box {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      margin-bottom: 24px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .banner-icon {
+      font-size: 4rem;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-sub {
+      background-color: #f0f0f0;
+      color: var(--text-color);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+
+    .btn-sub:hover {
+      background-color: #e0e0e0;
+      transform: none;
+    }
+
+    /* 진행 바 */
+    .progress-wrapper {
+      width: 100%;
+      background-color: #eee;
+      height: 10px;
+      border-radius: 5px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #8e44ad, #3498db);
+      transition: width 0.3s ease;
+    }
+
+    /* 질문 화면 */
+    .q-number {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      line-height: 1.45;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .option-btn {
+      padding: 18px 16px;
+      border: 2px solid #f0e6f6;
+      border-radius: 14px;
+      background: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+      background-color: #fbf5fc;
+      transform: translateY(-2px);
+    }
+
+    /* 로딩 화면 */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 40px auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    /* 결과 화면 */
+    .result-element {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+    }
+
+    .result-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .result-card {
+      background: #fdfafb;
+      border: 2px dashed #e8d8f0;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .result-tag {
+      display: inline-block;
+      background: #eee;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-right: 6px;
+      margin-bottom: 12px;
+    }
+
+    .result-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #34495e;
+    }
+
+    .result-desc li {
+      margin-bottom: 8px;
+      list-style-type: '🔮 ';
+      margin-left: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+      <span class="badge">사주 오행 심리 진단</span>
+      <h1 class="title">내 안의 사주 오행(五行)<br>성향 테스트 ☯️</h1>
+      <p class="subtitle">12가지 질문을 통해 내 기운을 지배하는<br>사주 오행 캐릭터를 확인해 보세요!</p>
+      
+      <div class="banner-box">
+        <div class="banner-icon">☯️</div>
+        <div style="font-size: 1.1rem; font-weight: 700;">木 · 火 · 土 · 金 · 水</div>
+      </div>
+
+      <button class="btn" onclick="startQuiz()">테스트 시작하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 돌아가기</button>
+    </div>
+
+    <!-- 2. 퀴즈 화면 -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-wrapper">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="q-number" class="q-number">QUESTION 01/12</div>
+      <div id="q-text" class="q-text">질문 내용이 들어갑니다.</div>
+      <div id="options-container" class="options-container">
+        <!-- 자바스크립트로 선택지 자동 생성 -->
+      </div>
+    </div>
+
+    <!-- 3. 분석 중 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <p class="loading-text">당신의 사주 기운을 분석하고 있습니다...</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div class="result-element" id="result-element">사주 오행 결과</div>
+      <h2 class="result-title" id="result-title">결과 캐릭터명</h2>
+      
+      <div class="result-card">
+        <div id="result-tags">
+          <span class="result-tag">#태그1</span>
+          <span class="result-tag">#태그2</span>
+        </div>
+        <ul id="result-desc" class="result-desc">
+          <!-- 자바스크립트로 설명 삽입 -->
+        </ul>
+      </div>
+
+      <button class="btn" onclick="shareResult()">결과 링크 복사하기</button>
+      <button class="btn btn-sub" onclick="restartQuiz()">다시 테스트하기</button>
+      <button class="btn btn-sub" onclick="location.href='index.html'">메인으로 이동</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 12개 질문 데이터 (사주 오행: 목(wood), 화(fire), 토(earth), 금(metal), 수(water) 매칭)
+    const questions = [
+      {
+        q: "1. 새로운 프로젝트나 모임을 시작할 때 나의 모습은?",
+        a: [
+          { text: "추진력 있게 퍼스트 펭귄처럼 앞장서서 이끈다.", type: "wood" },
+          { text: "신중하게 구체적인 규칙과 계획부터 세운다.", type: "metal" }
+        ]
+      },
+      {
+        q: "2. 처음 보는 사람들과 모인 자리에서 나는?",
+        a: [
+          { text: "분위기 메이커를 자처하며 열정적으로 대화를 주도한다.", type: "fire" },
+          { text: "상대방의 이야기를 경청하며 조용히 상황을 관찰한다.", type: "water" }
+        ]
+      },
+      {
+        q: "3. 친구가 고민을 털어놓을 때 나의 반응은?",
+        a: [
+          { text: "따뜻하게 공감해 주고 편안하게 안아준다.", type: "earth" },
+          { text: "문제의 원인을 분석하고 명확한 해결책을 제시한다.", type: "metal" }
+        ]
+      },
+      {
+        q: "4. 일을 처리할 때 내가 더 중요하게 생각하는 것은?",
+        a: [
+          { text: "멈추지 않는 성과와 유연한 성장 가능성", type: "wood" },
+          { text: "안정적인 지속성과 흔들리지 않는 신뢰", type: "earth" }
+        ]
+      },
+      {
+        q: "5. 갑작스럽게 일정이 변경되었을 때 나의 태도는?",
+        a: [
+          { text: "물 흐르듯 자연스럽게 유연하게 대처한다.", type: "water" },
+          { text: "원래 계획이 틀어져 스트레스를 받지만 즉시 재정비한다.", type: "metal" }
+        ]
+      },
+      {
+        q: "6. 나의 에너지는 주로 어디서 분출되는가?",
+        a: [
+          { text: "화려하고 활기찬 외부 활동 및 사람들과의 교류", type: "fire" },
+          { text: "조용하고 깊이 있는 혼자만의 생각과 탐구 시간", type: "water" }
+        ]
+      },
+      {
+        q: "7. 팀 내에서 갈등이 생겼을 때 나의 역할은?",
+        a: [
+          { text: "중립을 지키며 양쪽의 의견을 중재하는 버팀목", type: "earth" },
+          { text: "솔직하고 직설적인 대화로 단칼에 문제를 해결", type: "metal" }
+        ]
+      },
+      {
+        q: "8. 목표를 세웠을 때 나의 실행 스타일은?",
+        a: [
+          { text: "뜨거운 열정으로 빠르게 불태워 완성시킨다.", type: "fire" },
+          { text: "끈기 있게 자라나는 나무처럼 꾸준히 실행한다.", type: "wood" }
+        ]
+      },
+      {
+        q: "9. 나를 대표하는 삶의 가치관은?",
+        a: [
+          { text: "도전과 성장, 솟구치는 생명력", type: "wood" },
+          { text: "지혜와 통찰, 깊은 사고의 힘", type: "water" }
+        ]
+      },
+      {
+        q: "10. 주변 사람들이 평가하는 나의 인상은?",
+        a: [
+          { text: "에너지 넘치고 솔직하며 화끈한 사람", type: "fire" },
+          { text: "포근하고 묵직하여 언제나 믿을 수 있는 사람", type: "earth" }
+        ]
+      },
+      {
+        q: "11. 결정을 내릴 때 내가 의존하는 것은?",
+        a: [
+          { text: "객관적인 데이터와 원칙, 철저한 логика", type: "metal" },
+          { text: "넓은 포용력과 종합적인 상황 판단", type: "earth" }
+        ]
+      },
+      {
+        q: "12. 스트레스를 해소하는 나만의 방식은?",
+        a: [
+          { text: "음악 감상, 독서 등 조용히 수영하듯 침묵을 즐김", type: "water" },
+          { text: "새로운 모임에 참여하거나 신나게 운동으로 발산", type: "fire" }
+        ]
+      }
+    ];
+
+    // 결과 데이터 (오행 5가지 유형)
+    const results = {
+      wood: {
+        element: "목(木)의 기운",
+        title: "솟구치는 푸른 나무 🌳",
+        tags: ["#시작의에너지", "#도전정신", "#리더십", "#성장형"],
+        desc: [
+          "어떤 환경에서도 싹을 틔우는 강력한 생명력과 추진력을 가졌습니다.",
+          "새로운 일을 기획하고 앞장서서 도전하는 것에 두려움이 없습니다.",
+          "자기주관이 뚜렷하며 한번 목표를 정하면 꺾이지 않고 곧게 나아갑니다.",
+          "유연함을 조금 더 기르면 더욱 완벽한 리더가 될 수 있습니다."
+        ]
+      },
+      fire: {
+        element: "화(火)의 기운",
+        title: "열정적인 불꽃 🔥",
+        tags: ["#분위기메이커", "#솔직담백", "#열정폭발", "#인사이드아웃"],
+        desc: [
+          "주변을 환하게 밝히는 강렬한 열정과 표현력을 가지고 있습니다.",
+          "솔직하고 감정 표현이 확실하여 주변에 늘 사람이 모여듭니다.",
+          "뒤끝이 없고 예의와 직관을 중요하게 생각하는 화끈한 성격입니다.",
+          "에너지가 금방 소진될 수 있으니 페이스 조절이 필요합니다."
+        ]
+      },
+      earth: {
+        element: "토(土)의 기운",
+        title: "포근하고 묵직한 대지 ⛰️",
+        tags: ["#신뢰의아이콘", "#포용력", "#중재자", "#안정지향"],
+        desc: [
+          "모든 것을 감싸 안는 넓은 포용력과 단단한 안정을 추구합니다.",
+          "사람들의 이야기를 잘 들어주어 주변에서 상담 요청을 자주 받습니다.",
+          "쉽게 흔들리지 않으며 치우치지 않는 중립의 지혜를 가지고 있습니다.",
+          "우유부단해지지 않도록 가끔은 명확한 거절 표현이 필요합니다."
+        ]
+      },
+      metal: {
+        element: "금(金)의 기운",
+        title: "냉철하고 날카로운 원칙주의 ⚔️",
+        tags: ["#결단력", "#완벽주의", "#공정함", "#원칙수호"],
+        desc: [
+          "맺고 끊음이 확실하며 맺은 약속은 반드시 지키는 완벽주의자입니다.",
+          "공정하고 객관적인 시각으로 상황을 명확하게 판단합니다.",
+          "자신만의 철학과 기준이 확고하여 맡은 일을 완벽하게 마무리합니다.",
+          "타인에게도 엄격해질 수 있으니 부드러운 화법을 더해보세요."
+        ]
+      },
+      water: {
+        element: "수(水)의 기운",
+        title: "깊고 유연한 지혜의 바다 🌊",
+        tags: ["#깊은통찰", "#유연함", "#적응력", "#전략가"],
+        desc: [
+          "어디든 맞춰 흘러가는 뛰어난 적응력과 깊은 지혜를 지녔습니다.",
+          "조용해 보이지만 생각이 깊고 상상을 현실로 만드는 전략가입니다.",
+          "위기 상황에서도 유연하게 대처하며 상대의 마음을 잘 읽어냅니다.",
+          "생각이 너무 많아 실행이 늦어지지 않도록 행동력을 높여보세요."
+        ]
+      }
+    };
+
+    let currentQ = 0;
+    let scores = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+
+    function startQuiz() {
+      document.getElementById('start-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/12`;
+      document.getElementById('q-text').innerText = q.q;
+      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 12) * 100}%`;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.a.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = answer.text;
+        btn.onclick = () => selectOption(answer.type);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(type) {
+      scores[type]++;
+      currentQ++;
+
+      if (currentQ < questions.length) {
+        showQuestion();
+      } else {
+        showLoading();
+      }
+    }
+
+    function showLoading() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('loading-screen').classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.remove('active');
+        showResult();
+      }, 1800);
+    }
+
+    function showResult() {
+      // 가장 높은 점수의 오행 유형 추출
+      let maxType = 'wood';
+      let maxScore = -1;
+
+      for (const type in scores) {
+        if (scores[type] > maxScore) {
+          maxScore = scores[type];
+          maxType = type;
+        }
+      }
+
+      const res = results[maxType];
+
+      document.getElementById('result-element').innerText = res.element;
+      document.getElementById('result-title').innerText = res.title;
+
+      // 태그 설정
+      const tagsContainer = document.getElementById('result-tags');
+      tagsContainer.innerHTML = res.tags.map(t => `<span class="result-tag">${t}</span>`).join('');
+
+      // 설명 설정
+      const descContainer = document.getElementById('result-desc');
+      descContainer.innerHTML = res.desc.map(d => `<li>${d}</li>`).join('');
+
+      document.getElementById('result-screen').classList.add('active');
+    }
+
+    function restartQuiz() {
+      currentQ = 0;
+      scores = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+      document.getElementById('result-screen').classList.remove('active');
+      document.getElementById('start-screen').classList.add('active');
+    }
+
+    function shareResult() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('테스트 링크가 클립보드에 복사되었습니다! 친구들에게 공유해 보세요.');
+      });
+    }
+  </script>
+</body>
+</html>

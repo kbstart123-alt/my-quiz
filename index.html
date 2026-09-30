@@ -207,6 +207,7 @@
       <button class="tag-item" data-category="반려동물">반려동물</button>
       <button class="tag-item" data-category="성격">성격</button>
       <button class="tag-item" data-category="연애">연애</button>
+      <button class="tag-item" data-category="사주">사주</button>
     </div>
   </header>
 
@@ -248,6 +249,18 @@
       </div>
     </a>
 
+    <!-- 3. 사주 오행 테스트 카드 (신규 추가!) -->
+    <a href="saju-test.html" class="quiz-card" data-category="사주">
+      <div class="thumbnail-box">
+        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="사주 테스트">
+      </div>
+      <div class="card-body">
+        <span class="category-badge" style="background-color: #f3e5f5; color: #8e44ad;">사주</span>
+        <div class="card-title">내 안의 사주 오행 성향 테스트 ☯️</div>
+        <div class="card-footer">⏱️ 소요시간 약 3분</div>
+      </div>
+    </a>
+
     <!-- 검색 결과 없을 때 표시 -->
     <div id="no-result" class="no-result">검색 결과가 없습니다 🔍</div>
 
@@ -262,7 +275,6 @@
 
     let currentCategory = '전체';
 
-    // 필터링 통합 처리 함수
     function filterCards() {
       const query = searchInput.value.trim().toLowerCase();
       let visibleCount = 0;
@@ -282,7 +294,6 @@
         }
       });
 
-      // 검색 결과 없을 때 안내 문구
       if (visibleCount === 0) {
         noResultMsg.style.display = 'block';
       } else {
@@ -290,10 +301,8 @@
       }
     }
 
-    // 1. 검색창 입력 이벤트
     searchInput.addEventListener('input', filterCards);
 
-    // 2. 카테고리 버튼 클릭 이벤트
     tagBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         tagBtns.forEach(b => b.classList.remove('active'));
