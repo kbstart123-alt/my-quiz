@@ -39,6 +39,7 @@
       justify-content: space-between;
       align-items: center;
       padding-bottom: 24px;
+      gap: 16px;
     }
 
     .brand-logo {
@@ -49,12 +50,14 @@
       -webkit-text-fill-color: transparent;
       letter-spacing: -0.5px;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .nav-tags {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .tag-item {
@@ -69,16 +72,29 @@
       transition: all 0.2s;
     }
 
+    .tag-item:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
     .tag-item.active {
       background-color: var(--primary-color);
       color: #ffffff;
       border-color: var(--primary-color);
     }
 
+    /* 메인 컨테이너 */
+    main {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     /* 히어로 대표 비주얼 */
     .hero-section {
       width: 100%;
-      max-width: 860px;
       background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
       border-radius: 20px;
       padding: 40px 30px;
@@ -92,11 +108,13 @@
       font-size: 1.8rem;
       font-weight: 800;
       margin-bottom: 10px;
+      line-height: 1.3;
     }
 
     .hero-desc {
       font-size: 0.95rem;
       opacity: 0.9;
+      line-height: 1.5;
     }
 
     /* 검색 바 */
@@ -114,17 +132,17 @@
       font-size: 0.9rem;
       outline: none;
       background-color: white;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .search-input:focus {
       border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
     }
 
     /* 테스트 목록 그리드 */
     .grid-container {
       width: 100%;
-      max-width: 860px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 20px;
@@ -144,19 +162,25 @@
 
     .quiz-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
     }
 
     .thumbnail-box {
       width: 100%;
       height: 150px;
       overflow: hidden;
+      background-color: #f1f2f6;
     }
 
     .thumbnail-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .quiz-card:hover .thumbnail-box img {
+      transform: scale(1.05);
     }
 
     .card-body {
@@ -164,14 +188,13 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      flex-grow: 1;
     }
 
     .category-badge {
       align-self: flex-start;
       font-size: 0.75rem;
       font-weight: 700;
-      color: var(--primary-color);
-      background-color: #f0edff;
       padding: 4px 8px;
       border-radius: 6px;
     }
@@ -180,21 +203,46 @@
       font-size: 1rem;
       font-weight: 700;
       line-height: 1.4;
+      margin-top: 2px;
     }
 
     .card-footer {
       font-size: 0.8rem;
       color: var(--text-sub);
+      margin-top: auto;
+      padding-top: 8px;
     }
 
     /* 검색 결과 없음 메시지 */
     .no-result {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 40px;
+      padding: 60px 20px;
       color: var(--text-sub);
       font-weight: 600;
       display: none;
+      background-color: white;
+      border-radius: 16px;
+      border: 1px dashed #dfe6e9;
+    }
+
+    /* 모바일 대응 반응형 Style */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-tags {
+        justify-content: flex-start;
+        overflow-x: auto;
+        width: 100%;
+        padding-bottom: 4px;
+      }
+
+      .hero-title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -203,137 +251,156 @@
   <!-- 헤더 -->
   <header>
     <a href="index.html" class="brand-logo">네트워크.gg LAB</a>
-    <div class="nav-tags">
-      <button class="tag-item active" data-category="전체">전체</button>
-      <button class="tag-item" data-category="반려동물">반려동물</button>
-      <button class="tag-item" data-category="성격">성격</button>
-      <button class="tag-item" data-category="연애">연애</button>
-      <button class="tag-item" data-category="사주">사주</button>
-    </div>
+    <nav class="nav-tags" aria-label="테스트 카테고리">
+      <button type="button" class="tag-item active" data-category="전체">전체</button>
+      <button type="button" class="tag-item" data-category="학습/상식">학습/상식</button>
+      <button type="button" class="tag-item" data-category="반려동물">반려동물</button>
+      <button type="button" class="tag-item" data-category="성격">성격</button>
+      <button type="button" class="tag-item" data-category="연애">연애</button>
+      <button type="button" class="tag-item" data-category="사주">사주</button>
+    </nav>
   </header>
 
-  <!-- 대표 메인 배너 -->
-  <div class="hero-section">
-    <div class="hero-title">나를 알아가는 심리테스트 🧠</div>
-    <div class="hero-desc">간단한 문항을 통해 나의 성격 유형과 심리 상태를 확인해 보세요.</div>
-  </div>
+  <main>
+    <!-- 대표 메인 배너 -->
+    <section class="hero-section">
+      <h1 class="hero-title">나를 알아가는 심리테스트 & 퀴즈 🧠</h1>
+      <p class="hero-desc">간단한 문항을 통해 성격 유형, 심리 상태, 영어 상식까지 확인해 보세요.</p>
+    </section>
 
-  <!-- 검색창 -->
-  <div class="search-wrapper">
-    <input type="text" id="search-input" class="search-input" placeholder="궁금한 심리테스트를 검색해 보세요...">
-  </div>
+    <!-- 검색창 -->
+    <div class="search-wrapper">
+      <input type="search" id="search-input" class="search-input" placeholder="궁금한 테스트 및 퀴즈를 검색해 보세요..." autocomplete="off">
+    </div>
 
-  <!-- 카드 목록 -->
-  <div class="grid-container" id="quiz-grid">
-    
-    <!-- 1. 강아지 심리테스트 카드 -->
-    <a href="dog-test.html" class="quiz-card" data-category="반려동물">
-      <div class="thumbnail-box">
-        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="강아지 심리 테스트">
-      </div>
-      <div class="card-body">
-        <span class="category-badge">반려동물</span>
-        <div class="card-title">나와 어울리는 강아지 성격 테스트 🐶</div>
-        <div class="card-footer">⏱️ 소요시간 약 2분</div>
-      </div>
-    </a>
+    <!-- 카드 목록 -->
+    <div class="grid-container" id="quiz-grid">
+      
+      <!-- 1. 초등 영어 상식 퀴즈 카드 -->
+      <a href="english-test.html" class="quiz-card" data-category="학습/상식">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=500&q=80" alt="영어 상식 퀴즈 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #e6faf9; color: #00b894;">학습/상식</span>
+          <h2 class="card-title">초등 필수 영어 상식 퀴즈 🔤</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
 
-    <!-- 2. 고양이 심리테스트 카드 (신규 추가!) -->
-    <a href="cat-test.html" class="quiz-card" data-category="반려동물">
-      <div class="thumbnail-box">
-        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80" alt="고양이 심리 테스트">
-      </div>
-      <div class="card-body">
-        <span class="category-badge" style="background-color: #fff0e6; color: #ff9f43;">반려동물</span>
-        <div class="card-title">나와 어울리는 고양이 성격 테스트 🐱</div>
-        <div class="card-footer">⏱️ 소요시간 약 2분</div>
-      </div>
-    </a>
+      <!-- 2. 고양이 심리테스트 카드 -->
+      <a href="cat-test.html" class="quiz-card" data-category="반려동물">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80" alt="고양이 심리 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #fff0e6; color: #ff9f43;">반려동물</span>
+          <h2 class="card-title">나와 어울리는 고양이 성격 테스트 🐱</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
 
-    <!-- 3. 연애 심리테스트 카드 -->
-    <a href="love-test.html" class="quiz-card" data-category="연애">
-      <div class="thumbnail-box">
-        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트">
-      </div>
-      <div class="card-body">
-        <span class="category-badge" style="background-color: #ffe0e6; color: #ff6b81;">연애</span>
-        <div class="card-title">나의 연애 캐릭터 테스트 💕</div>
-        <div class="card-footer">⏱️ 소요시간 약 2분</div>
-      </div>
-    </a>
+      <!-- 3. 강아지 심리테스트 카드 -->
+      <a href="dog-test.html" class="quiz-card" data-category="반려동물">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="강아지 심리 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #fff0e6; color: #ff9f43;">반려동물</span>
+          <h2 class="card-title">나와 어울리는 강아지 성격 테스트 🐶</h2>
+          <div class="card-footer">⏱️️ 소요시간 약 2분</div>
+        </div>
+      </a>
 
-    <!-- 4. 성격 컬러 테스트 카드 -->
-    <a href="personality-test.html" class="quiz-card" data-category="성격">
-      <div class="thumbnail-box">
-        <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=500&q=80" alt="성격 테스트">
-      </div>
-      <div class="card-body">
-        <span class="category-badge" style="background-color: #e8f4fc; color: #3498db;">성격</span>
-        <div class="card-title">나의 성격 컬러 테스트 🎨</div>
-        <div class="card-footer">⏱️ 소요시간 약 2분</div>
-      </div>
-    </a>
+      <!-- 4. 연애 심리테스트 카드 -->
+      <a href="love-test.html" class="quiz-card" data-category="연애">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #ffe0e6; color: #ff6b81;">연애</span>
+          <h2 class="card-title">나의 연애 캐릭터 테스트 💕</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
 
-    <!-- 5. 사주 오행 테스트 카드 -->
-    <a href="saju-test.html" class="quiz-card" data-category="사주">
-      <div class="thumbnail-box">
-        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="사주 테스트">
-      </div>
-      <div class="card-body">
-        <span class="category-badge" style="background-color: #f3e5f5; color: #8e44ad;">사주</span>
-        <div class="card-title">내 안의 사주 오행 성향 테스트 ☯️</div>
-        <div class="card-footer">⏱️ 소요시간 약 3분</div>
-      </div>
-    </a>
+      <!-- 5. 성격 컬러 테스트 카드 -->
+      <a href="personality-test.html" class="quiz-card" data-category="성격">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=500&q=80" alt="성격 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #e8f4fc; color: #3498db;">성격</span>
+          <h2 class="card-title">나의 성격 컬러 테스트 🎨</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
 
-    <!-- 검색 결과 없을 때 표시 -->
-    <div id="no-result" class="no-result">검색 결과가 없습니다 🔍</div>
+      <!-- 6. 사주 오행 테스트 카드 -->
+      <a href="saju-test.html" class="quiz-card" data-category="사주">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="사주 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #f3e5f5; color: #8e44ad;">사주</span>
+          <h2 class="card-title">내 안의 사주 오행 성향 테스트 ☯️</h2>
+          <div class="card-footer">⏱️ 소요시간 약 3분</div>
+        </div>
+      </a>
 
-  </div>
+      <!-- 검색 결과 없을 때 표시 -->
+      <div id="no-result" class="no-result">검색 결과가 없습니다 🔍</div>
+
+    </div>
+  </main>
 
   <!-- 검색 및 카테고리 필터링 자바스크립트 -->
   <script>
-    const searchInput = document.getElementById('search-input');
-    const quizCards = document.querySelectorAll('.quiz-card');
-    const tagBtns = document.querySelectorAll('.tag-item');
-    const noResultMsg = document.getElementById('no-result');
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const quizCards = document.querySelectorAll('.quiz-card');
+      const tagBtns = document.querySelectorAll('.tag-item');
+      const noResultMsg = document.getElementById('no-result');
 
-    let currentCategory = '전체';
+      let currentCategory = '전체';
 
-    function filterCards() {
-      const query = searchInput.value.trim().toLowerCase();
-      let visibleCount = 0;
+      function filterCards() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
 
-      quizCards.forEach(card => {
-        const title = card.querySelector('.card-title').innerText.toLowerCase();
-        const category = card.getAttribute('data-category');
+        quizCards.forEach(card => {
+          const title = card.querySelector('.card-title').textContent.toLowerCase();
+          const category = card.getAttribute('data-category');
 
-        const matchesSearch = title.includes(query);
-        const matchesCategory = (currentCategory === '전체' || category === currentCategory);
+          const matchesSearch = title.includes(query);
+          const matchesCategory = (currentCategory === '전체' || category === currentCategory);
 
-        if (matchesSearch && matchesCategory) {
-          card.style.display = 'flex';
-          visibleCount++;
+          if (matchesSearch && matchesCategory) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0) {
+          noResultMsg.style.display = 'block';
         } else {
-          card.style.display = 'none';
+          noResultMsg.style.display = 'none';
         }
-      });
-
-      if (visibleCount === 0) {
-        noResultMsg.style.display = 'block';
-      } else {
-        noResultMsg.style.display = 'none';
       }
-    }
 
-    searchInput.addEventListener('input', filterCards);
+      // 검색어 입력 이벤트
+      searchInput.addEventListener('input', filterCards);
 
-    tagBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tagBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCategory = btn.getAttribute('data-category');
-        filterCards();
+      // 카테고리 버튼 클릭 이벤트
+      tagBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tagBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-category');
+          filterCards();
+        });
       });
     });
   </script>
