@@ -65,6 +65,7 @@
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .tag-item.active {
@@ -112,6 +113,11 @@
       font-size: 0.9rem;
       outline: none;
       background-color: white;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-color);
     }
 
     /* 테스트 목록 그리드 */
@@ -179,6 +185,16 @@
       font-size: 0.8rem;
       color: var(--text-sub);
     }
+
+    /* 검색 결과 없음 메시지 */
+    .no-result {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px;
+      color: var(--text-sub);
+      font-weight: 600;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -187,10 +203,10 @@
   <header>
     <a href="index.html" class="brand-logo">네트워크.gg LAB</a>
     <div class="nav-tags">
-      <button class="tag-item active">전체</button>
-      <button class="tag-item">반려동물</button>
-      <button class="tag-item">성격</button>
-      <button class="tag-item">연애</button>
+      <button class="tag-item active" data-category="전체">전체</button>
+      <button class="tag-item" data-category="반려동물">반려동물</button>
+      <button class="tag-item" data-category="성격">성격</button>
+      <button class="tag-item" data-category="연애">연애</button>
     </div>
   </header>
 
@@ -202,14 +218,14 @@
 
   <!-- 검색창 -->
   <div class="search-wrapper">
-    <input type="text" class="search-input" placeholder="궁금한 심리테스트를 검색해 보세요...">
+    <input type="text" id="search-input" class="search-input" placeholder="궁금한 심리테스트를 검색해 보세요...">
   </div>
 
-  <!-- 카드 목록 (dog-test.html, love-test.html 연결 완료) -->
-  <div class="grid-container">
+  <!-- 카드 목록 -->
+  <div class="grid-container" id="quiz-grid">
     
     <!-- 1. 강아지 심리테스트 카드 -->
-    <a href="dog-test.html" class="quiz-card">
+    <a href="dog-test.html" class="quiz-card" data-category="반려동물">
       <div class="thumbnail-box">
         <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="강아지 심리 테스트">
       </div>
@@ -221,7 +237,7 @@
     </a>
 
     <!-- 2. 연애 심리테스트 카드 -->
-    <a href="love-test.html" class="quiz-card">
+    <a href="love-test.html" class="quiz-card" data-category="연애">
       <div class="thumbnail-box">
         <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트">
       </div>
@@ -232,7 +248,61 @@
       </div>
     </a>
 
+    <!-- 검색 결과 없을 때 표시 -->
+    <div id="no-result" class="no-result">검색 결과가 없습니다 🔍</div>
+
   </div>
+
+  <!-- 검색 및 카테고리 필터링 자바스크립트 -->
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const quizCards = document.querySelectorAll('.quiz-card');
+    const tagBtns = document.querySelectorAll('.tag-item');
+    const noResultMsg = document.getElementById('no-result');
+
+    let currentCategory = '전체';
+
+    // 필터링 통합 처리 함수
+    function filterCards() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      quizCards.forEach(card => {
+        const title = card.querySelector('.card-title').innerText.toLowerCase();
+        const category = card.getAttribute('data-category');
+
+        const matchesSearch = title.includes(query);
+        const matchesCategory = (currentCategory === '전체' || category === currentCategory);
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // 검색 결과 없을 때 안내 문구
+      if (visibleCount === 0) {
+        noResultMsg.style.display = 'block';
+      } else {
+        noResultMsg.style.display = 'none';
+      }
+    }
+
+    // 1. 검색창 입력 이벤트
+    searchInput.addEventListener('input', filterCards);
+
+    // 2. 카테고리 버튼 클릭 이벤트
+    tagBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tagBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-category');
+        filterCards();
+      });
+    });
+  </script>
 
 </body>
 </html>
