@@ -3,21 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>밝은 밤 - 책 속 사건과 나의 깨달음 퀴즈 🌕</title>
+  <title>밝은 밤 - 마음을 깊이 새기는 상황극 퀴즈 🌕</title>
   <style>
     :root {
       --primary-color: #4a69bd;
       --primary-hover: #1e3799;
-      --bg-color: #0d131d;
-      --card-bg: #151d2a;
+      --bg-color: #0c1021;
+      --card-bg: #1b263b;
       --text-color: #eccc68;
-      --sub-text: #8c9ba5;
+      --sub-text: #a4b0be;
       --wrong-color: #ff6b6b;
       --correct-color: #2ed573;
       --white: #ffffff;
-      --story-bg: rgba(255, 255, 255, 0.04);
-      --card-inner-bg: #1c2738;
-      --border-color: rgba(236, 204, 104, 0.2);
     }
 
     * {
@@ -35,17 +32,17 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
-      background-image: radial-gradient(circle at 50% 20%, #151d2a 0%, #0d131d 100%);
+      background-image: radial-gradient(circle at 50% 20%, #1e272e 0%, #0c1021 100%);
     }
 
     .container {
       background: var(--card-bg);
       width: 100%;
-      max-width: 540px;
+      max-width: 520px;
       border-radius: 24px;
-      padding: 32px 20px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-      border: 1px solid var(--border-color);
+      padding: 32px 24px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(236, 204, 104, 0.2);
       text-align: center;
       max-height: 90vh;
       overflow-y: auto;
@@ -61,14 +58,14 @@
 
     .badge {
       display: inline-block;
-      background-color: rgba(236, 204, 104, 0.12);
+      background-color: rgba(236, 204, 104, 0.15);
       color: var(--text-color);
       font-size: 0.85rem;
       font-weight: 700;
       padding: 6px 14px;
       border-radius: 20px;
       margin-bottom: 16px;
-      border: 1px solid rgba(236, 204, 104, 0.25);
+      border: 1px solid rgba(236, 204, 104, 0.3);
     }
 
     .title {
@@ -88,8 +85,8 @@
 
     .banner-box {
       width: 100%;
-      height: 160px;
-      background: linear-gradient(135deg, #1c2738 0%, #0d131d 100%);
+      height: 180px;
+      background: linear-gradient(135deg, #1e3799 0%, #0c1021 100%);
       border-radius: 18px;
       display: flex;
       flex-direction: column;
@@ -97,11 +94,11 @@
       align-items: center;
       color: var(--text-color);
       margin-bottom: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .banner-icon {
-      font-size: 3.5rem;
+      font-size: 4rem;
       margin-bottom: 8px;
     }
 
@@ -115,45 +112,40 @@
     .btn {
       width: 100%;
       padding: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: none;
       border-radius: 14px;
-      background-color: transparent;
-      color: var(--white);
-      font-size: 0.95rem;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-
-    .btn-main {
-      background-color: var(--primary-color);
-      border: none;
       box-shadow: 0 4px 12px rgba(74, 105, 189, 0.4);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
     }
 
     .btn:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: var(--primary-hover);
       transform: translateY(-2px);
     }
 
-    .btn-main:hover {
-      background-color: var(--primary-hover);
+    .btn-sub {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--sub-text);
+      box-shadow: none;
     }
 
-    .btn-sub {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: var(--sub-text);
-      border: none;
+    .btn-sub:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      transform: none;
     }
 
     .progress-wrapper {
       width: 100%;
-      background-color: rgba(255, 255, 255, 0.08);
+      background-color: rgba(255, 255, 255, 0.1);
       height: 8px;
       border-radius: 4px;
       margin-bottom: 24px;
@@ -174,30 +166,12 @@
       margin-bottom: 8px;
     }
 
-    .story-box {
-      background: var(--story-bg);
-      border-left: 4px solid var(--text-color);
-      border-radius: 8px;
-      padding: 14px;
-      font-size: 0.88rem;
-      color: #dcdde1;
-      text-align: left;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .story-title {
-      font-weight: 700;
-      color: var(--text-color);
-      font-size: 0.8rem;
-      margin-bottom: 4px;
-    }
-
     .q-text {
       font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      line-height: 1.5;
+      font-weight: 600;
+      margin-bottom: 24px;
+      line-height: 1.6;
+      min-height: 70px;
       text-align: left;
       word-break: keep-all;
     }
@@ -210,9 +184,9 @@
 
     .option-btn {
       padding: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       font-size: 0.9rem;
       font-weight: 500;
       color: var(--white);
@@ -225,7 +199,7 @@
 
     .option-btn:hover {
       border-color: var(--text-color);
-      background-color: rgba(236, 204, 104, 0.08);
+      background-color: rgba(236, 204, 104, 0.1);
       transform: translateY(-2px);
     }
 
@@ -244,128 +218,138 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* 결과 화면 스타일 */
-    .result-score-summary {
-      font-size: 0.95rem;
-      font-weight: 700;
+    .result-score {
+      font-size: 1rem;
+      font-weight: 800;
       color: var(--text-color);
       margin-bottom: 6px;
     }
 
-    .result-main-title {
-      font-size: 1.45rem;
+    .result-title {
+      font-size: 1.5rem;
       font-weight: 800;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       color: var(--white);
     }
 
-    .visual-card-wrapper {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
+    /* 독서 비주얼 카드 (Visual Card) 섹션 */
+    .visual-card-section {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(236, 204, 104, 0.35);
+      border-radius: 18px;
       padding: 20px 16px;
       text-align: left;
+      margin-top: 24px;
     }
 
-    .visual-header-title {
-      font-size: 1.05rem;
+    .visual-header {
+      font-size: 1rem;
       font-weight: 800;
       color: var(--text-color);
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 6px;
     }
 
-    .visual-header-sub {
-      font-size: 0.82rem;
+    .visual-desc {
+      font-size: 0.8rem;
       color: var(--sub-text);
-      line-height: 1.5;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      line-height: 1.4;
     }
 
-    .cards-scroll-container {
+    /* 비주얼 카드 슬라이더 */
+    .card-slider {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       overflow-x: auto;
       padding-bottom: 12px;
       scroll-snap-type: x mandatory;
     }
 
-    .cards-scroll-container::-webkit-scrollbar {
+    .card-slider::-webkit-scrollbar {
       height: 6px;
     }
-    .cards-scroll-container::-webkit-scrollbar-thumb {
+
+    .card-slider::-webkit-scrollbar-thumb {
       background: rgba(236, 204, 104, 0.3);
       border-radius: 3px;
     }
 
     .v-card {
-      min-width: 250px;
-      max-width: 250px;
-      background: var(--card-inner-bg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 20px 16px;
+      min-width: 240px;
+      max-width: 240px;
+      height: 280px;
+      background: linear-gradient(145deg, #2c3e50, #0c1021);
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 270px;
       scroll-snap-align: start;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      flex-shrink: 0;
     }
 
     .v-card-tag {
-      display: inline-block;
-      background: rgba(236, 204, 104, 0.15);
+      font-size: 0.7rem;
+      font-weight: 700;
       color: var(--text-color);
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 4px 8px;
+      background: rgba(236, 204, 104, 0.15);
+      padding: 3px 8px;
       border-radius: 6px;
       align-self: flex-start;
-      margin-bottom: 12px;
     }
 
-    .v-card-content {
-      font-size: 0.92rem;
-      font-weight: 600;
-      line-height: 1.6;
+    .v-card-body {
+      font-size: 0.88rem;
       color: var(--white);
+      line-height: 1.5;
       word-break: keep-all;
+      margin: 12px 0;
     }
 
     .v-card-footer {
-      border-top: 1px dashed rgba(255, 255, 255, 0.15);
-      padding-top: 10px;
       font-size: 0.75rem;
       color: var(--sub-text);
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-top: 8px;
       text-align: right;
     }
 
-    .share-btn-row {
+    .share-btn-group {
       display: flex;
-      gap: 10px;
-      margin-top: 16px;
+      gap: 8px;
+      margin-top: 14px;
     }
 
     .share-btn {
       flex: 1;
-      padding: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border: 1px solid rgba(236, 204, 104, 0.4);
+      background: rgba(236, 204, 104, 0.1);
+      color: var(--text-color);
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--white);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      transition: all 0.2s ease;
+      text-align: center;
     }
 
     .share-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(236, 204, 104, 0.25);
+    }
+
+    .toast-msg {
+      display: none;
+      font-size: 0.78rem;
+      color: var(--correct-color);
+      text-align: center;
+      margin-top: 8px;
+      font-weight: 600;
     }
 
     .review-section {
@@ -392,32 +376,25 @@
       line-height: 1.5;
     }
 
+    .review-item.wrong {
+      background: rgba(255, 107, 107, 0.08);
+      border-color: rgba(255, 107, 107, 0.2);
+    }
+
     .review-q {
       font-weight: 700;
       margin-bottom: 8px;
       color: var(--white);
     }
 
-    .book-fact-review {
-      background: rgba(236, 204, 104, 0.08);
-      border-radius: 8px;
-      padding: 10px;
-      margin-top: 8px;
-      font-size: 0.82rem;
-      color: var(--text-color);
-      line-height: 1.5;
+    .ans-my {
+      color: var(--wrong-color);
+      margin-bottom: 4px;
     }
 
-    /* 📌 저작권 및 출처 표기 풋터 스타일 */
-    .copyright-footer {
-      margin-top: 28px;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.12);
-      font-size: 0.78rem;
-      color: var(--sub-text);
-      line-height: 1.5;
-      text-align: center;
-      word-break: keep-all;
+    .ans-correct {
+      color: var(--correct-color);
+      font-weight: 600;
     }
   </style>
 </head>
@@ -428,23 +405,18 @@
     <!-- 1. 시작 화면 -->
     <div id="start-screen" class="screen active">
       <span class="badge">최은영 장편소설</span>
-      <h1 class="title">밝은 밤 🌕<br>책 속 사건과 나의 깨달음</h1>
-      <p class="subtitle">4대에 걸친 여성들의 삶과 이야기 (총 7문제)<br>실제 책 속 장면을 복습하고 나만의 깨달음을 남겨보세요.</p>
+      <h1 class="title">밝은 밤 🌕<br>상황극 감성 퀴즈</h1>
+      <p class="subtitle">4대에 걸친 삶의 궤적과 다정한 연결감.<br>책 속 인물들의 상황에 나를 대입해 보세요.</p>
       
       <div class="banner-box">
-        <div class="banner-icon">📖</div>
-        <div style="font-size: 0.95rem; font-weight: 600;">"줄거리도 기억하고, 1분 요약 카드도 만드는 독서 노트"</div>
+        <div class="banner-icon">🕯️</div>
+        <div style="font-size: 0.95rem; font-weight: 600;">"아무리 깊은 밤이라도, 다정한 온기가 있다면"</div>
       </div>
 
       <div class="btn-group">
-        <button type="button" class="btn btn-main" onclick="startQuiz()">퀴즈 시작하기</button>
+        <button type="button" class="btn" onclick="startQuiz()">퀴즈 시작하기</button>
         <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
       </div>
-
-      <!-- 시작 화면 출처 표기 -->
-      <footer class="copyright-footer">
-        📌 본 콘텐츠는 최은영 작가의 소설 《밝은 밤》(문학동네)을 바탕으로 작성된 개인 독서 기록 및 감상용 퀴즈입니다.
-      </footer>
     </div>
 
     <!-- 2. 퀴즈 화면 -->
@@ -452,13 +424,7 @@
       <div class="progress-wrapper">
         <div id="progress-bar" class="progress-bar"></div>
       </div>
-      <div id="q-number" class="q-number">QUESTION 01/07</div>
-      
-      <div class="story-box">
-        <div class="story-title">📖 책 속 실제 이야기</div>
-        <div id="story-text">책 내용 요약</div>
-      </div>
-
+      <div id="q-number" class="q-number">QUESTION 01/10</div>
       <div id="q-text" class="q-text">질문 내용</div>
       <div id="options-container" class="options-container"></div>
     </div>
@@ -466,77 +432,66 @@
     <!-- 3. 로딩 화면 -->
     <div id="loading-screen" class="screen">
       <div class="spinner"></div>
-      <p style="color: var(--sub-text); font-size: 0.95rem;">책 속 생각들을 정리하고 있습니다...</p>
+      <p style="color: var(--sub-text); font-size: 0.95rem;">마음의 결을 정리하는 중입니다...</p>
     </div>
 
     <!-- 4. 결과 화면 -->
     <div id="result-screen" class="screen">
-      <div class="result-score-summary" id="result-score">7문제 중 7문항의 마음을 깊이 이해하셨습니다.</div>
-      <h2 class="result-main-title">밤을 건너는 수줍은 발걸음 🌙</h2>
+      <div class="result-score" id="result-score">10문제 중 0문제 이해!</div>
+      <h2 class="result-title" id="result-title">결과 타이틀</h2>
 
-      <!-- 1분 요약 비주얼 카드 영역 -->
-      <div class="visual-card-wrapper">
-        <div class="visual-header-title">📷 1분 요약 비주얼 카드 (출력 독서법)</div>
-        <div class="visual-header-sub">친구에게 1분 만에 이 책을 추천하듯 완성된 3개의 요약 카드입니다. 독서모임이나 SNS에 공유해보세요.</div>
+      <!-- 독서 비주얼 카드 (Visual Card) & 독서모임 공유 영역 -->
+      <div class="visual-card-section">
+        <div class="visual-header">
+          <span>📸 1분 요약 비주얼 카드 (출력 독서법)</span>
+        </div>
+        <p class="visual-desc">친구에게 1분 만에 이 책을 추천하듯 완성된 3개의 요약 카드입니다. 독서모임이나 SNS에 공유해보세요.</p>
 
-        <div class="cards-scroll-container">
-          <!-- CARD 01 -->
+        <div class="card-slider">
+          <!-- 카드 1 -->
           <div class="v-card">
-            <div>
-              <span class="v-card-tag">CARD 01. 핵심 한 줄</span>
-              <div class="v-card-content">
-                "아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."
-              </div>
+            <span class="v-card-tag">CARD 01. 핵심 한 줄</span>
+            <div class="v-card-body">
+              "아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."
             </div>
             <div class="v-card-footer">#밝은밤 #최은영</div>
           </div>
-
-          <!-- CARD 02 -->
+          <!-- 카드 2 -->
           <div class="v-card">
-            <div>
-              <span class="v-card-tag">CARD 02. 마음을 울린 문장</span>
-              <div class="v-card-content">
-                "내가 아무리 깊은 밤에 길을 잃어도 나를 부르고 기다려주는 사람이 단 한 명이라도 있다는 것."
-              </div>
+            <span class="v-card-tag">CARD 02. 마음을 울린 문장</span>
+            <div class="v-card-body">
+              "내가 아무리 깊은 밤에 길을 잃어도, 나를 부르고 기다려주는 사람이 단 한 명이라도 있다는 것."
             </div>
             <div class="v-card-footer">#연대 #다정함</div>
           </div>
-
-          <!-- CARD 03 -->
+          <!-- 카드 3 -->
           <div class="v-card">
-            <div>
-              <span class="v-card-tag">CARD 03. 나의 깨달음</span>
-              <div class="v-card-content">
-                "잠시 멈추고 떠나는 것은 포기가 아니라 나를 지키는 용기이며, 지나온 이들의 삶이 지금 나를 지탱한다."
-              </div>
+            <span class="v-card-tag">CARD 03. 독서모임 추천사</span>
+            <div class="v-card-body">
+              "내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 내 자신을 가만히 안아주게 만드는 책."
             </div>
-            <div class="v-card-footer">#독서기록 #뿌리</div>
+            <div class="v-card-footer">#독서모임 #추천도서</div>
           </div>
         </div>
 
-        <!-- 공유 버튼 -->
-        <div class="share-btn-row">
-          <button class="share-btn" onclick="copyRecommendation()">💬 1분 추천사 복사</button>
-          <button class="share-btn" onclick="shareLink()">🔗 테스트 링크 공유</button>
+        <div class="share-btn-group">
+          <button type="button" class="share-btn" onclick="copyRecommendation()">💬 1분 추천사 복사</button>
+          <button type="button" class="share-btn" onclick="shareUrl()">🔗 테스트 링크 공유</button>
         </div>
+        <div id="toast-msg" class="toast-msg">텍스트가 클립보드에 복사되었습니다!</div>
       </div>
 
-      <!-- 책 속 사건과 깨달음 복습 -->
+      <!-- 오답 노트 및 해설 영역 -->
       <div class="review-section">
-        <div class="review-title">📚 책 복습 & 작가의 메시지</div>
+        <div class="review-title">📝 복습 및 책의 관점 확인</div>
         <div id="review-list"></div>
       </div>
 
-      <!-- 하단 버튼 -->
+      <!-- 결과 화면 하단 버튼 그룹 -->
       <div class="btn-group">
-        <button type="button" class="btn btn-main" onclick="restartQuiz()">다시 풀어보기</button>
+        <button type="button" class="btn" onclick="restartQuiz()">다시 풀어보기</button>
         <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
       </div>
-
-      <!-- 결과 화면 출처 표기 -->
-      <footer class="copyright-footer">
-        📌 본 콘텐츠는 최은영 작가의 소설 《밝은 밤》(문학동네)을 바탕으로 작성된 개인 독서 기록 및 감상용 퀴즈입니다.
-      </footer>
     </div>
 
   </div>
@@ -544,69 +499,95 @@
   <script>
     const questions = [
       {
-        story: "주인공 '지우'는 남편과의 이혼과 직장에서의 번아웃으로 깊은 절망에 빠지자, 모든 관계를 정리하고 무작정 외할머니가 계신 시골 바닷가 마을 '희령'으로 내려갑니다.",
-        q: "Q1. 지우처럼 모든 일상과 인간관계에 지쳤을 때, 당신이라면 어떤 선택을 하시겠습니까?",
+        q: "Q1. [지우의 상황] 나를 지탱해주지 못하는 오랜 관계나 상황에서 깊은 무력감을 느꼈을 때, 이 책이 제안하는 첫 번째 걸음은?",
         a: [
-          { text: "1. 지우처럼 잠시 모든 걸 내려놓고 나를 지킬 수 있는 새로운 장소로 떠난다.", fact: "실제 책에서 지우는 희령으로 떠나 할머니의 따뜻한 밥을 먹으며 마음의 상처를 치유하기 시작합니다." },
-          { text: "2. 떠나는 건 무책임하므로 일단 현실을 견디며 주말에 쉰다.", fact: "책에서는 무작정 견디는 대신, 나를 돌볼 수 있는 환경의 변화가 치유의 시작임을 이야기합니다." }
+          { text: "1. 아무 일도 없었던 것처럼 참고 견디며 타인의 기대에 맞춘다.", isCorrect: false },
+          { text: "2. 소란스러운 곳을 잠시 떠나, 나를 온전히 마주할 자신만의 '희령' 같은 시간을 마련한다.", isCorrect: true },
+          { text: "3. 상황의 원인을 오직 나의 부족함 탓으로 돌리며 자책한다.", isCorrect: false }
         ]
       },
       {
-        story: "일제강점기 시절, 백정의 딸이라는 신분 때문에 괴롭힘당하던 증조모 '삼천이'는 야반도주를 통해 '이대기'와 결혼해 경성으로 옵니다. 그곳에서 평생의 친구 '리향'을 만나 서로의 상처를 보듬습니다.",
-        q: "Q2. 비극적인 시대 상황 속에서도 삼천이와 리향이 버틸 수 있었던 핵심 동력은 무엇이었을까요?",
+        q: "Q2. [할머니와 지우] 오랫동안 소원했던 타인과 다시 만났을 때, '밝은 밤'의 소통 방식은?",
         a: [
-          { text: "1. 서로의 신분이나 상처를 평가하지 않고 곁에 머물러준 다정한 온기", fact: "정답입니다! 전쟁과 가난 속에서도 두 사람은 서로의 존재 덕분에 삶을 포기하지 않았습니다." },
-          { text: "2. 세상에서 살아남아야 한다는 냉정한 출세욕과 개인주의", fact: "책에서는 물질적 성공보다 사람과 사람 간의 다정한 연대가 삶을 지탱한다고 말합니다." }
+          { text: "1. 과거 서운했던 일들의 시비부터 가린다.", isCorrect: false },
+          { text: "2. 서두르지 않고, 따뜻한 밥 한 끼와 소소한 안부를 나누며 천천히 온기를 더한다.", isCorrect: true },
+          { text: "3. 어차피 이해는 불가능하므로 적당히 거리를 둔다.", isCorrect: false }
         ]
       },
       {
-        story: "할머니 '영옥'은 전쟁통에 친구와 헤어지고, 딸 '새희'와의 관계도 서툴러 서로 깊은 상처를 주고받은 채 수십 년간 마음의 문을 닫고 살았습니다.",
-        q: "Q3. 사랑하지만 상처를 주고받아 멀어진 가족 관계를 마주할 때, 책이 제안하는 태도는?",
+        q: "Q3. [삼천이와 리향] 전쟁과 가난 같은 비극 속에서 사람이 사람을 버티게 하는 힘은?",
         a: [
-          { text: "1. 서두르지 않고, 따뜻한 밥 한 끼와 안부를 나누며 시간을 두고 천천히 온기를 더한다.", fact: "맞습니다! 지우와 할머니 영옥은 서두르지 않고 소소한 일상을 함께 나누며 닫힌 마음을 엽니다." },
-          { text: "2. 지나간 일은 돌이킬 수 없으니 적당한 거리를 두고 남처럼 지낸다.", fact: "책에서는 시대의 아픔과 표현하지 못한 마음을 연민으로 바라볼 때 화해가 시작된다고 강조합니다." }
+          { text: "1. 서로의 상처를 함부로 판단하지 않고, 곁에 머물러주는 다정한 온기와 연결감", isCorrect: true },
+          { text: "2. 이기적으로 남을 이용하는 냉철함", isCorrect: false },
+          { text: "3. 압도적인 물질적 부와 권력", isCorrect: false }
         ]
       },
       {
-        story: "지우는 희령에서 할머니가 전해주는 증조모(삼천), 할머니(영옥), 엄마(새희)로 이어지는 4대의 삶 이야기를 들으며 그동안 몰랐던 자신의 뿌리를 발견합니다.",
-        q: "Q4. 수십 년 전 이전 세대 여성들의 아픈 삶에 대한 이야기는 지금의 나에게 어떤 의미일까요?",
+        q: "Q4. [새희와 영옥] 사랑하지만 서로에게 상처를 주고 마음을 닫은 관계를 마주할 때 필요한 시선은?",
         a: [
-          { text: "1. 그분들이 견뎌낸 아픔과 삶의 궤적이 지금 내 삶을 단단하게 지탱하는 뿌리가 된다.", fact: "지우는 조상들의 삶을 통해 자신이 혼자가 아니며, 깊은 사랑의 결과로 존재함을 깨닫습니다." },
-          { text: "2. 지나간 옛날 이야기일 뿐, 현재 나의 문제와는 무관하다.", fact: "책은 과거 여성들의 서사가 현재 나의 삶과 잇닿아 있다는 '연결감'을 핵심 메시지로 전합니다." }
+          { text: "1. 한쪽이 악한 사람이라고 단정짓는다.", isCorrect: false },
+          { text: "2. 시대의 무게와 표현하지 못한 마음이 얽힌 아픔임을 인지하고 연민으로 바라본다.", isCorrect: true },
+          { text: "3. 되돌리려는 노력조차 무의미하다고 포기한다.", isCorrect: false }
         ]
       },
       {
-        story: "어머니 '새희'는 희령에서 외롭게 지내는 자신의 엄마(영옥)와 지우 사이의 교감을 뒤늦게 알게 되며 오랜 감정의 앙금을 마주합니다.",
-        q: "Q5. 세대 간의 쌓인 오해와 감정의 골을 허물기 위해 가장 먼저 필요한 것은 무엇일까요?",
+        q: "Q5. [수십 년 전의 이야기들] 수십 년 전 이전 세대 여성들의 삶과 이야기들은 지금의 나에게 어떤 의미가 될까요?",
         a: [
-          { text: "1. 상대방이 그 시대와 환경에서 견뎌내야 했던 삶의 무게를 연민으로 바라보는 것", fact: "맞습니다. 엄마와 딸이 서로의 상처를 이해하기 시작할 때 오랜 앙금이 비로소 녹아내립니다." },
-          { text: "2. 누구의 잘잘못인지 명확히 따지고 잘잘못을 가려내는 것", fact: "책은 비난이나 가리키기보다 서로의 아픔을 가만히 들어주는 공감이 필요함을 보여줍니다." }
+          { text: "1. 빨리 잊어야 할 옛날 이야기일 뿐이다.", isCorrect: false },
+          { text: "2. 그분들이 견뎌낸 아픔과 삶의 궤적이 지금 내 삶과 연결되어 있음을 느끼는 뿌리가 된다.", isCorrect: true },
+          { text: "3. 나와는 무관한 타인들의 개인사다.", isCorrect: false }
         ]
       },
       {
-        story: "증조모 삼천이와 리향, 그리고 할머니 영옥에 이르기까지 그들은 전쟁과 가난이라는 혹독한 어둠을 관통해 왔습니다.",
-        q: "Q6. 인생의 거대한 시련이나 어둠을 만났을 때 책 속 인물들이 보여준 삶의 자세는?",
+        q: "Q6. [상처를 마주하는 자세] 내 안에 오랫동안 묻어둔 슬픔이 수면 위로 올라왔을 때 바람직한 자세는?",
         a: [
-          { text: "1. 서로의 손을 놓지 않고 따뜻한 밥 한 그릇이라도 나누며 온기를 지켜내는 것", fact: "정답입니다! 그들은 거대한 역사 앞에서도 서로를 품어주는 작고 다정한 온기로 버텨냈습니다." },
-          { text: "2. 나만이라도 살아남기 위해 다른 사람과의 관계를 끊어버리는 것", fact: "책은 고립보다 다정한 연결감만이 시련을 이겨내게 하는 힘임을 전합니다." }
+          { text: "1. 슬픔이 찾아왔음을 인정하고, 밤이 지나가듯 마음껏 아파하고 충분히 애도해 준다.", isCorrect: true },
+          { text: "2. 슬픔은 약함의 증거이므로 억누른다.", isCorrect: false },
+          { text: "3. 술이나 일에 중독되어 생각하지 않으려 애쓴다.", isCorrect: false }
         ]
       },
       {
-        story: "최은영 작가는 인생의 온갖 고난과 어둠을 건너온 인물들이 서로의 손을 놓지 않는 과정을 통해 제목 '밝은 밤'의 의미를 전달합니다.",
-        q: "Q7. 이 책이 말하는 '밝은 밤'의 진짜 의미는 무엇일까요?",
+        q: "Q7. [타인의 고통] 내가 다 이해할 수 없는 타인의 깊은 아픔을 목격했을 때의 태도는?",
         a: [
-          { text: "1. 아무리 캄캄한 인생의 밤이라도, 다정한 누군가가 곁에 있다면 그 밤은 견뎌낼 수 있다.", fact: "정답입니다! 캄캄한 어둠 속에서도 다정한 연결감이 있다면 인생은 다시 켜질 수 있습니다." },
-          { text: "2. 고통이나 어둠이 전혀 존재하지 않는 완벽하고 행복한 상태", fact: "책은 고통이 없는 삶이 아니라, 고통 속에서도 서로를 안아주는 다정함의 가치를 말합니다." }
+          { text: "1. 가벼운 조언이나 위로를 던진다.", isCorrect: false },
+          { text: "2. 다 이해할 수 없음을 인정하되, 평가하지 않고 가만히 들어준다.", isCorrect: true },
+          { text: "3. 감정 소비가 심하므로 모른 척 피한다.", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q8. [여성들의 연대] 혹독했던 시대의 파도를 건너며 인물들이 삶을 포기하지 않을 수 있었던 동력은?",
+        a: [
+          { text: "1. 출세욕", isCorrect: false },
+          { text: "2. 서로의 손을 놓지 않고 '너는 혼자가 아니다'라고 말해주는 서로의 존재", isCorrect: true },
+          { text: "3. 거대 담론이나 정치적 신념", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q9. [나 자신과의 화해] 과거의 미숙했던 선택에 대해 후회가 밀려올 때 이 책이 전하는 메시지는?",
+        a: [
+          { text: "1. 그때의 나 역시 최선을 다해 견디고 있었음을 인정하고 다정하게 안아준다.", isCorrect: true },
+          { text: "2. 평생 죄책감을 안고 살아간다.", isCorrect: false },
+          { text: "3. 과거의 실수를 남의 탓으로 돌린다.", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q10. [책을 덮으며] 이 책이 말하는 '밝은 밤'의 진짜 의미는?",
+        a: [
+          { text: "1. 어둠이 없는 완벽한 상태", isCorrect: false },
+          { text: "2. 아무리 캄캄한 인생의 밤이라도, 다정한 누군가가 함께 있다면 견뎌낼 수 있다는 은은한 희망", isCorrect: true },
+          { text: "3. 성공하여 밤하늘의 스타가 되는 것", isCorrect: false }
         ]
       }
     ];
 
     let currentQ = 0;
-    let userChoices = [];
+    let score = 0;
+    let userAnswers = [];
 
     function startQuiz() {
       currentQ = 0;
-      userChoices = [];
+      score = 0;
+      userAnswers = [];
       document.getElementById('start-screen').classList.remove('active');
       document.getElementById('quiz-screen').classList.add('active');
       showQuestion();
@@ -614,10 +595,9 @@
 
     function showQuestion() {
       const q = questions[currentQ];
-      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/07`;
-      document.getElementById('story-text').innerText = q.story;
+      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/10`;
       document.getElementById('q-text').innerText = q.q;
-      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 7) * 100}%`;
+      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 10) * 100}%`;
 
       const optionsContainer = document.getElementById('options-container');
       optionsContainer.innerHTML = '';
@@ -632,15 +612,20 @@
       });
     }
 
-    function selectOption(selected) {
+    function selectOption(selectedAnswer) {
       const currentQuestion = questions[currentQ];
-      userChoices.push({
-        q: currentQuestion.q,
-        selectedText: selected.text,
-        fact: selected.fact
+      const correctAnswer = currentQuestion.a.find(item => item.isCorrect);
+
+      userAnswers.push({
+        question: currentQuestion.q,
+        selected: selectedAnswer.text,
+        correct: correctAnswer.text,
+        isCorrect: selectedAnswer.isCorrect
       });
 
+      if (selectedAnswer.isCorrect) score++;
       currentQ++;
+
       if (currentQ < questions.length) {
         showQuestion();
       } else {
@@ -659,7 +644,15 @@
     }
 
     function showResult() {
-      document.getElementById('result-score').innerText = `7문제 중 ${userChoices.length}문항의 마음을 깊이 이해하셨습니다.`;
+      document.getElementById('result-score').innerText = `10문제 중 ${score}문항의 마음을 깊이 이해하셨습니다.`;
+
+      let title = "";
+      if (score === 10) title = "달빛처럼 다정한 이해자 🌕";
+      else if (score >= 7) title = "따뜻한 온기를 품은 마음 🕯️";
+      else title = "밤을 건너는 수줍은 발걸음 🌙";
+
+      document.getElementById('result-title').innerText = title;
+
       renderReviewList();
       document.getElementById('result-screen').classList.add('active');
     }
@@ -668,34 +661,50 @@
       const reviewList = document.getElementById('review-list');
       reviewList.innerHTML = '';
 
-      userChoices.forEach((item) => {
+      userAnswers.forEach((item) => {
         const itemDiv = document.createElement('div');
-        itemDiv.className = 'review-item';
+        itemDiv.className = `review-item ${item.isCorrect ? '' : 'wrong'}`;
         itemDiv.innerHTML = `
-          <div class="review-q">❓ ${item.q}</div>
-          <div style="color: var(--sub-text); margin-bottom: 6px;">나의 선택: ${item.selectedText}</div>
-          <div class="book-fact-review">💡 <b>책 속에 담긴 이야기:</b><br>${item.fact}</div>
+          <div class="review-q">${item.isCorrect ? '✅' : '❌'} ${item.question}</div>
+          ${!item.isCorrect ? `<div class="ans-my">내 선택: ${item.selected}</div>` : ''}
+          <div class="ans-correct">올바른 관점: ${item.correct}</div>
         `;
         reviewList.appendChild(itemDiv);
       });
     }
 
+    function copyRecommendation() {
+      const text = `[소설 『밝은 밤』 1분 추천사]\n\n"아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."\n\n내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 나 자신을 가만히 안아주게 만드는 책입니다. 독서모임 추천도서로 강력 추천합니다!`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("추천사가 클립보드에 복사되었습니다!");
+      });
+    }
+
+    function shareUrl() {
+      if (navigator.share) {
+        navigator.share({
+          title: '밝은 밤 상황극 감성 퀴즈',
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          showToast("링크가 클립보드에 복사되었습니다!");
+        });
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
+    }
+
     function restartQuiz() {
       document.getElementById('result-screen').classList.remove('active');
       document.getElementById('start-screen').classList.add('active');
-    }
-
-    function copyRecommendation() {
-      const text = "《밝은 밤》 - 아무리 캄캄한 인생의 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다. 나와 내 뿌리를 돌아보게 하는 따뜻한 소설!";
-      navigator.clipboard.writeText(text).then(() => {
-        alert("1분 추천사가 클립보드에 복사되었습니다! SNS나 독서모임에 공유해보세요.");
-      });
-    }
-
-    function shareLink() {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        alert("테스트 링크가 클립보드에 복사되었습니다!");
-      });
     }
   </script>
 </body>
