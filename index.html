@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>인터랙티브 상황극 독서 퀴즈 📚</title>
+  <title>네트워크.gg - IQ & 심리테스트 Lab</title>
   <style>
     :root {
-      --primary-color: #4a69bd;
-      --primary-hover: #1e3799;
-      --bg-color: #0c1021;
-      --card-bg: #1b263b;
-      --text-color: #eccc68;
-      --sub-text: #a4b0be;
-      --wrong-color: #ff6b6b;
-      --correct-color: #2ed573;
-      --white: #ffffff;
+      --primary-color: #6c5ce7;
+      --secondary-color: #a29bfe;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #2d3436;
+      --text-sub: #636e72;
     }
 
     * {
@@ -26,667 +23,387 @@
 
     body {
       background-color: var(--bg-color);
-      color: var(--white);
+      color: var(--text-main);
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
-      background-image: radial-gradient(circle at 50% 20%, #1e272e 0%, #0c1021 100%);
+      padding: 24px 16px;
     }
 
-    .container {
-      background: var(--card-bg);
+    /* 상단 헤더 */
+    header {
       width: 100%;
-      max-width: 520px;
-      border-radius: 24px;
-      padding: 32px 24px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(236, 204, 104, 0.2);
-      text-align: center;
-      max-height: 90vh;
-      overflow-y: auto;
+      max-width: 860px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      gap: 16px;
     }
 
-    .screen {
-      display: none;
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #6c5ce7, #00cec9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
-    .screen.active {
-      display: block;
+    .nav-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .badge {
-      display: inline-block;
-      background-color: rgba(236, 204, 104, 0.15);
-      color: var(--text-color);
-      font-size: 0.85rem;
-      font-weight: 700;
+    .tag-item {
+      background-color: #ffffff;
+      color: var(--text-sub);
+      border: 1px solid #dfe6e9;
       padding: 6px 14px;
       border-radius: 20px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(236, 204, 104, 0.3);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .title {
-      font-size: 1.6rem;
+    .tag-item:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .tag-item.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-color: var(--primary-color);
+    }
+
+    /* 메인 컨테이너 */
+    main {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 히어로 대표 비주얼 */
+    .hero-section {
+      width: 100%;
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      border-radius: 20px;
+      padding: 40px 30px;
+      color: white;
+      text-align: center;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.2);
+    }
+
+    .hero-title {
+      font-size: 1.8rem;
       font-weight: 800;
-      margin-bottom: 12px;
-      color: var(--text-color);
+      margin-bottom: 10px;
       line-height: 1.3;
     }
 
-    .subtitle {
+    .hero-desc {
       font-size: 0.95rem;
-      color: var(--sub-text);
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .book-select-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .book-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      padding: 18px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .book-card:hover {
-      border-color: var(--text-color);
-      background: rgba(236, 204, 104, 0.08);
-      transform: translateY(-2px);
-    }
-
-    .book-tag {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-color);
-      margin-bottom: 4px;
-    }
-
-    .book-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 6px;
-    }
-
-    .book-desc {
-      font-size: 0.85rem;
-      color: var(--sub-text);
-      line-height: 1.4;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 14px;
-      background-color: var(--primary-color);
-      color: white;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(74, 105, 189, 0.4);
-    }
-
-    .btn:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
-    }
-
-    .btn-sub {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: var(--sub-text);
-      box-shadow: none;
-    }
-
-    .btn-sub:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
-      transform: none;
-    }
-
-    .progress-wrapper {
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.1);
-      height: 8px;
-      border-radius: 4px;
-      margin-bottom: 24px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #4a69bd, #eccc68);
-      transition: width 0.3s ease;
-    }
-
-    .q-number {
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: var(--text-color);
-      margin-bottom: 8px;
-    }
-
-    .q-text {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-      line-height: 1.6;
-      min-height: 70px;
-      text-align: left;
-      word-break: keep-all;
-    }
-
-    .options-container {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .option-btn {
-      padding: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.05);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--white);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: left;
+      opacity: 0.9;
       line-height: 1.5;
-      word-break: keep-all;
     }
 
-    .option-btn:hover {
-      border-color: var(--text-color);
-      background-color: rgba(236, 204, 104, 0.1);
-      transform: translateY(-2px);
-    }
-
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(255, 255, 255, 0.1);
-      border-top: 5px solid var(--text-color);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 40px auto 20px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .result-score {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--text-color);
-      margin-bottom: 6px;
-    }
-
-    .result-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      color: var(--white);
-    }
-
-    .action-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(236, 204, 104, 0.3);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: left;
-      margin-bottom: 20px;
-    }
-
-    .action-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-color);
-      margin-bottom: 12px;
-    }
-
-    .action-select {
+    /* 검색 바 */
+    .search-wrapper {
       width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background-color: var(--bg-color);
-      color: var(--white);
+      max-width: 500px;
+      margin-bottom: 36px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 24px;
+      border-radius: 30px;
+      border: 2px solid #e2e8f0;
       font-size: 0.9rem;
       outline: none;
+      background-color: white;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .review-section {
-      text-align: left;
-      margin-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 20px;
+    .search-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
     }
 
-    .review-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--text-color);
-      margin-bottom: 14px;
+    /* 테스트 목록 그리드 */
+    .grid-container {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
 
-    .review-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-      font-size: 0.85rem;
-      line-height: 1.5;
+    .quiz-card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #edf2f7;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
     }
 
-    .review-item.wrong {
-      background: rgba(255, 107, 107, 0.08);
-      border-color: rgba(255, 107, 107, 0.2);
+    .quiz-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
     }
 
-    .review-q {
+    .thumbnail-box {
+      width: 100%;
+      height: 150px;
+      overflow: hidden;
+      background-color: #f1f2f6;
+    }
+
+    .thumbnail-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .quiz-card:hover .thumbnail-box img {
+      transform: scale(1.05);
+    }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .category-badge {
+      align-self: flex-start;
+      font-size: 0.75rem;
       font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--white);
+      padding: 4px 8px;
+      border-radius: 6px;
     }
 
-    .ans-my {
-      color: var(--wrong-color);
-      margin-bottom: 4px;
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-top: 2px;
     }
 
-    .ans-correct {
-      color: var(--correct-color);
+    .card-footer {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    /* 검색 결과 없음 메시지 */
+    .no-result {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-sub);
       font-weight: 600;
+      display: none;
+      background-color: white;
+      border-radius: 16px;
+      border: 1px dashed #dfe6e9;
+    }
+
+    /* 모바일 대응 반응형 Style */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-tags {
+        justify-content: flex-start;
+        overflow-x: auto;
+        width: 100%;
+        padding-bottom: 4px;
+      }
+
+      .hero-title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <!-- 헤더 -->
+  <header>
+    <a href="index.html" class="brand-logo">네트워크.gg LAB</a>
+    <nav class="nav-tags" aria-label="테스트 카테고리">
+      <button type="button" class="tag-item active" data-category="전체">전체</button>
+      <button type="button" class="tag-item" data-category="학습/상식">학습/상식</button>
+      <button type="button" class="tag-item" data-category="반려동물">반려동물</button>
+      <button type="button" class="tag-item" data-category="성격">성격</button>
+      <button type="button" class="tag-item" data-category="연애">연애</button>
+      <button type="button" class="tag-item" data-category="사주">사주</button>
+    </nav>
+  </header>
 
-    <!-- 1. 책 선택 (메인 화면) -->
-    <div id="start-screen" class="screen active">
-      <span class="badge">액티브 리딩 리콜 서바이벌</span>
-      <h1 class="title">독서 기억력 살리기 📖</h1>
-      <p class="subtitle">읽고 난 뒤 멍해지는 뇌를 깨우는 방법!<br>풀고 싶은 책을 선택해 보세요.</p>
+  <main>
+    <!-- 대표 메인 배너 -->
+    <section class="hero-section">
+      <h1 class="hero-title">나를 알아가는 심리테스트 & 퀴즈 🧠</h1>
+      <p class="hero-desc">간단한 문항을 통해 성격 유형, 심리 상태, 영어 상식까지 확인해 보세요.</p>
+    </section>
+
+    <!-- 검색창 -->
+    <div class="search-wrapper">
+      <input type="search" id="search-input" class="search-input" placeholder="궁금한 테스트 및 퀴즈를 검색해 보세요..." autocomplete="off">
+    </div>
+
+    <!-- 카드 목록 -->
+    <div class="grid-container" id="quiz-grid">
       
-      <div class="book-select-grid">
-        <div class="book-card" onclick="startBookQuiz('richDad')">
-          <div class="book-tag">경제 / 경영</div>
-          <div class="book-title">부자 아빠 가난한 아빠 💰</div>
-          <div class="book-desc">돈에 대한 마인드셋과 자산/부채 구분법을 내 삶의 선택에 대입해보는 상황극 퀴즈</div>
+      <!-- 1. 초등 영어 상식 퀴즈 카드 -->
+      <a href="english-test.html" class="quiz-card" data-category="학습/상식">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=500&q=80" alt="영어 상식 퀴즈 대표 이미지">
         </div>
-
-        <div class="book-card" onclick="startBookQuiz('brightNight')">
-          <div class="book-tag">한국 소설</div>
-          <div class="book-title">밝은 밤 🌕</div>
-          <div class="book-desc">4대에 걸친 여성들의 삶과 다정한 연결감, 상처와 화해의 감성을 깊이 새기는 퀴즈</div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #e6faf9; color: #00b894;">학습/상식</span>
+          <h2 class="card-title">초등 필수 영어 상식 퀴즈 🔤</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
         </div>
-      </div>
+      </a>
+
+      <!-- 2. 고양이 심리테스트 카드 -->
+      <a href="cat-test.html" class="quiz-card" data-category="반려동물">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80" alt="고양이 심리 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #fff0e6; color: #ff9f43;">반려동물</span>
+          <h2 class="card-title">나와 어울리는 고양이 성격 테스트 🐱</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
+
+      <!-- 3. 강아지 심리테스트 카드 -->
+      <a href="dog-test.html" class="quiz-card" data-category="반려동물">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=500&q=80" alt="강아지 심리 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #fff0e6; color: #ff9f43;">반려동물</span>
+          <h2 class="card-title">나와 어울리는 강아지 성격 테스트 🐶</h2>
+          <div class="card-footer">⏱️️ 소요시간 약 2분</div>
+        </div>
+      </a>
+
+      <!-- 4. 연애 심리테스트 카드 -->
+      <a href="love-test.html" class="quiz-card" data-category="연애">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="연애 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #ffe0e6; color: #ff6b81;">연애</span>
+          <h2 class="card-title">나의 연애 캐릭터 테스트 💕</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
+
+      <!-- 5. 성격 컬러 테스트 카드 -->
+      <a href="personality-test.html" class="quiz-card" data-category="성격">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=500&q=80" alt="성격 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #e8f4fc; color: #3498db;">성격</span>
+          <h2 class="card-title">나의 성격 컬러 테스트 🎨</h2>
+          <div class="card-footer">⏱️ 소요시간 약 2분</div>
+        </div>
+      </a>
+
+      <!-- 6. 사주 오행 테스트 카드 -->
+      <a href="saju-test.html" class="quiz-card" data-category="사주">
+        <div class="thumbnail-box">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" alt="사주 테스트 대표 이미지">
+        </div>
+        <div class="card-body">
+          <span class="category-badge" style="background-color: #f3e5f5; color: #8e44ad;">사주</span>
+          <h2 class="card-title">내 안의 사주 오행 성향 테스트 ☯️</h2>
+          <div class="card-footer">⏱️ 소요시간 약 3분</div>
+        </div>
+      </a>
+
+      <!-- 검색 결과 없을 때 표시 -->
+      <div id="no-result" class="no-result">검색 결과가 없습니다 🔍</div>
+
     </div>
+  </main>
 
-    <!-- 2. 퀴즈 화면 -->
-    <div id="quiz-screen" class="screen">
-      <div class="progress-wrapper">
-        <div id="progress-bar" class="progress-bar"></div>
-      </div>
-      <div id="q-number" class="q-number">QUESTION 01/10</div>
-      <div id="q-text" class="q-text">질문 내용</div>
-      <div id="options-container" class="options-container"></div>
-    </div>
-
-    <!-- 3. 로딩 화면 -->
-    <div id="loading-screen" class="screen">
-      <div class="spinner"></div>
-      <p style="color: var(--sub-text); font-size: 0.95rem;">책의 관점으로 내 기억을 정리하는 중...</p>
-    </div>
-
-    <!-- 4. 결과 화면 -->
-    <div id="result-screen" class="screen">
-      <div class="result-score" id="result-score">10문제 중 0문제 이해!</div>
-      <h2 class="result-title" id="result-title">결과 타이틀</h2>
-
-      <!-- 실행 카드(Action Item) 연계 -->
-      <div class="action-box">
-        <div class="action-title" id="action-title">🌱 오늘 내 삶에 적용할 다짐</div>
-        <select id="action-select" class="action-select"></select>
-      </div>
-
-      <!-- 오답 노트 영역 -->
-      <div class="review-section">
-        <div class="review-title">📝 복습 및 책의 관점 확인</div>
-        <div id="review-list"></div>
-      </div>
-
-      <div class="btn-group">
-        <button type="button" class="btn" onclick="goToHome()">다른 책 선택하기</button>
-      </div>
-    </div>
-
-  </div>
-
+  <!-- 검색 및 카테고리 필터링 자바스크립트 -->
   <script>
-    // 책별 데이터셋 (부자 아빠 가난한 아빠 + 밝은 밤)
-    const quizData = {
-      richDad: {
-        title: "부자 아빠 가난한 아빠",
-        actionOptions: [
-          "이번 달 수입에서 10% 이상을 자산(ETF/주식) 매수용으로 먼저 떼어놓기",
-          "현재 내 지출 목록에서 부채(소모성 지출) 항목 찾아내어 줄이기",
-          "금융지식을 쌓기 위한 경제 서적/강의 1개 골라 학습하기"
-        ],
-        questions: [
-          {
-            q: "Q1. 당신에게 월급 300만 원이 들어왔습니다. '부자 아빠'의 관점이라면 가장 먼저 무엇을 해야 할까요?",
-            a: [
-              { text: "1. 사고 싶었던 명품이나 옷을 일시불로 산다.", isCorrect: false },
-              { text: "2. 소액이라도 주식/부동산 ETF 등 자산이 되는 곳에 먼저 투자한다.", isCorrect: true },
-              { text: "3. 적금에 넣고 남은 돈으로 생활한다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q2. 책에서 정의하는 '자산(Asset)'과 '부채(Liability)'의 가장 결정적인 차이는 무엇인가요?",
-            a: [
-              { text: "1. 비싼 물건은 자산이고, 저렴한 물건은 부채다.", isCorrect: false },
-              { text: "2. 자산은 내 주머니에 돈을 넣어주고, 부채는 내 주머니에서 돈을 빼간다.", isCorrect: true },
-              { text: "3. 은행에 보관 중인 모든 현금은 자동으로 자산이 된다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q3. '가난한 아빠'가 자녀에게 주로 권하는 삶의 방식은 무엇일까요?",
-            a: [
-              { text: "1. 공부 열심히 해서 좋은 회사에 취직해 안정적인 월급을 받아라.", isCorrect: true },
-              { text: "2. 위험을 감수하더라도 사업을 만들고 시스템을 구축해라.", isCorrect: false },
-              { text: "3. 학교 공부보다 금융 지식을 먼저 쌓아라.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q4. 내가 직접 살고 있는 '자격(내 집)'에 대해 저자는 어떤 시각을 가질까요?",
-            a: [
-              { text: "1. 조건 없이 무조건 가장 안전한 최고의 자산이다.", isCorrect: false },
-              { text: "2. 대출 이자와 세금 등 지속적으로 돈이 나가므로 부채의 성격을 띤다.", isCorrect: true },
-              { text: "3. 집은 수입을 창출하므로 많을수록 좋다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q5. '돈을 위해 일하지 말고, 돈이 나를 위해 일하게 하라'는 말의 핵심 의미는?",
-            a: [
-              { text: "1. 일을 전혀 하지 않고 불로소득만 노려라.", isCorrect: false },
-              { text: "2. 노동 소득을 자산 시스템(주식/부동산/사업) 구축으로 전환하라.", isCorrect: true },
-              { text: "3. 복권이나 고위험 가상화폐에 투자하라.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q6. 금융 IQ를 높이기 위해 가장 기본이 되는 4가지 분야가 아닌 것은?",
-            a: [
-              { text: "1. 회계 및 투자 지식", isCorrect: false },
-              { text: "2. 시장에 대한 이해와 법률", isCorrect: false },
-              { text: "3. 타인의 시선을 의식하는 소비 기술", isCorrect: true }
-            ]
-          },
-          {
-            q: "Q7. 직장인이 경제적 자유를 향해 가기 위해 현명하게 취해야 할 태도는?",
-            a: [
-              { text: "1. 직장을 당장 그만두고 올인한다.", isCorrect: false },
-              { text: "2. 본업을 유지하면서 자기만의 자산 컬럼(Asset column)을 꾸준히 키운다.", isCorrect: true },
-              { text: "3. 월급만 가지고 평생 적금만 모은다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q8. 사람들이 자산을 모으지 못하고 '새앙쥐 쳇바퀴(Rat Race)'에 갇히는 주된 원인은?",
-            a: [
-              { text: "1. 두려움과 욕망에 이끌린 무분별한 소비 및 금융 지식 부족", isCorrect: true },
-              { text: "2. 정부의 높은 세금 제도만 때문", isCorrect: false },
-              { text: "3. 월급 자체가 너무 적기 때문만", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q9. 실패에 대한 '두려움'을 마주했을 때 부자 아빠가 권하는 마음가짐은?",
-            a: [
-              { text: "1. 실패가 두려우면 아무런 시도도 하지 않는다.", isCorrect: false },
-              { text: "2. 실패를 배움의 기회로 삼고 위험을 관리하며 행동한다.", isCorrect: true },
-              { text: "3. 남들에게 위험을 모두 떠넘긴다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q10. 이 책을 읽고 난 후, 부자가 되기 위해 내가 지금 당장 시작해야 할 일은?",
-            a: [
-              { text: "1. 나의 수입/지출 및 자산/부채 현황표를 작성하고 금융 공부를 시작한다.", isCorrect: true },
-              { text: "2. 사고 싶었던 할부 물건을 바로 구매한다.", isCorrect: false },
-              { text: "3. 나중에 돈이 많이 생길 때까지 아무것도 하지 않는다.", isCorrect: false }
-            ]
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search-input');
+      const quizCards = document.querySelectorAll('.quiz-card');
+      const tagBtns = document.querySelectorAll('.tag-item');
+      const noResultMsg = document.getElementById('no-result');
+
+      let currentCategory = '전체';
+
+      function filterCards() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        quizCards.forEach(card => {
+          const title = card.querySelector('.card-title').textContent.toLowerCase();
+          const category = card.getAttribute('data-category');
+
+          const matchesSearch = title.includes(query);
+          const matchesCategory = (currentCategory === '전체' || category === currentCategory);
+
+          if (matchesSearch && matchesCategory) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
           }
-        ]
-      },
-      brightNight: {
-        title: "밝은 밤",
-        actionOptions: [
-          "오랫동안 연락 못 한 다정한 이에게 짧은 안부 보내기",
-          "오늘 하루 고생한 나 자신에게 비난 대신 따뜻한 밥 한 끼 선물하기",
-          "누군가의 슬픔을 섣불리 판단하지 않고 그저 가만히 들어주기",
-          "나만의 '희령' 같은 조용한 휴식 공간 만들어보기"
-        ],
-        questions: [
-          {
-            q: "Q1. [지우의 상황] 나를 지탱해주지 못하는 오랜 관계나 상황에서 깊은 무력감을 느꼈을 때, 이 책이 제안하는 첫 번째 걸음은?",
-            a: [
-              { text: "1. 아무 일도 없었던 것처럼 참고 견디며 타인의 기대에 맞춘다.", isCorrect: false },
-              { text: "2. 소란스러운 곳을 잠시 떠나, 나를 온전히 마주할 자신만의 '희령' 같은 시간을 마련한다.", isCorrect: true },
-              { text: "3. 상황의 원인을 오직 나의 부족함 탓으로 돌리며 자책한다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q2. [할머니와 지우] 오랫동안 소원했던 타인과 다시 만났을 때, '밝은 밤'의 소통 방식은?",
-            a: [
-              { text: "1. 과거 서운했던 일들의 시비부터 가린다.", isCorrect: false },
-              { text: "2. 서두르지 않고, 따뜻한 밥 한 끼와 소소한 안부를 나누며 천천히 온기를 더한다.", isCorrect: true },
-              { text: "3. 어차피 이해는 불가능하므로 적당히 거리를 둔다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q3. [삼천이와 리향] 전쟁과 가난 같은 비극 속에서 사람이 사람을 버티게 하는 힘은?",
-            a: [
-              { text: "1. 서로의 상처를 함부로 판단하지 않고, 곁에 머물러주는 다정한 온기와 연결감", isCorrect: true },
-              { text: "2. 이기적으로 남을 이용하는 냉철함", isCorrect: false },
-              { text: "3. 압도적인 물질적 부와 권력", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q4. [새희와 영옥] 사랑하지만 서로에게 상처를 주고 마음을 닫은 관계를 마주할 때 필요한 시선은?",
-            a: [
-              { text: "1. 한쪽이 악한 사람이라고 단정짓는다.", isCorrect: false },
-              { text: "2. 시대의 무게와 표현하지 못한 마음이 얽힌 아픔임을 인지하고 연민으로 바라본다.", isCorrect: true },
-              { text: "3. 되돌리려는 노력조차 무의미하다고 포기한다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q5. [수십 년 전의 이야기들] 수십 년 전 이전 세대 여성들의 삶과 이야기들은 지금의 나에게 어떤 의미가 될까요?",
-            a: [
-              { text: "1. 빨리 잊어야 할 옛날 이야기일 뿐이다.", isCorrect: false },
-              { text: "2. 그분들이 견뎌낸 아픔과 삶의 궤적이 지금 내 삶과 연결되어 있음을 느끼는 뿌리가 된다.", isCorrect: true },
-              { text: "3. 나와는 무관한 타인들의 개인사다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q6. [상처를 마주하는 자세] 내 안에 오랫동안 묻어둔 슬픔이 수면 위로 올라왔을 때 바람직한 자세는?",
-            a: [
-              { text: "1. 슬픔이 찾아왔음을 인정하고, 밤이 지나가듯 마음껏 아파하고 충분히 애도해 준다.", isCorrect: true },
-              { text: "2. 슬픔은 약함의 증거이므로 억누른다.", isCorrect: false },
-              { text: "3. 술이나 일에 중독되어 생각하지 않으려 애쓴다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q7. [타인의 고통] 내가 다 이해할 수 없는 타인의 깊은 아픔을 목격했을 때의 태도는?",
-            a: [
-              { text: "1. 가벼운 조언이나 위로를 던진다.", isCorrect: false },
-              { text: "2. 다 이해할 수 없음을 인정하되, 평가하지 않고 가만히 들어준다.", isCorrect: true },
-              { text: "3. 감정 소비가 심하므로 모른 척 피한다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q8. [여성들의 연대] 혹독했던 시대의 파도를 건너며 인물들이 삶을 포기하지 않을 수 있었던 동력은?",
-            a: [
-              { text: "1. 출세욕", isCorrect: false },
-              { text: "2. 서로의 손을 놓지 않고 '너는 혼자가 아니다'라고 말해주는 서로의 존재", isCorrect: true },
-              { text: "3. 거대 담론이나 정치적 신념", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q9. [나 자신과의 화해] 과거의 미숙했던 선택에 대해 후회가 밀려올 때 이 책이 전하는 메시지는?",
-            a: [
-              { text: "1. 그때의 나 역시 최선을 다해 견디고 있었음을 인정하고 다정하게 안아준다.", isCorrect: true },
-              { text: "2. 평생 죄책감을 안고 살아간다.", isCorrect: false },
-              { text: "3. 과거의 실수를 남의 탓으로 돌린다.", isCorrect: false }
-            ]
-          },
-          {
-            q: "Q10. [책을 덮으며] 이 책이 말하는 '밝은 밤'의 진짜 의미는?",
-            a: [
-              { text: "1. 어둠이 없는 완벽한 상태", isCorrect: false },
-              { text: "2. 아무리 캄캄한 인생의 밤이라도, 다정한 누군가가 함께 있다면 견뎌낼 수 있다는 은은한 희망", isCorrect: true },
-              { text: "3. 성공하여 밤하늘의 스타가 되는 것", isCorrect: false }
-            ]
-          }
-        ]
+        });
+
+        if (visibleCount === 0) {
+          noResultMsg.style.display = 'block';
+        } else {
+          noResultMsg.style.display = 'none';
+        }
       }
-    };
 
-    let selectedBook = null;
-    let currentQ = 0;
-    let score = 0;
-    let userAnswers = [];
+      // 검색어 입력 이벤트
+      searchInput.addEventListener('input', filterCards);
 
-    function startBookQuiz(bookKey) {
-      selectedBook = quizData[bookKey];
-      currentQ = 0;
-      score = 0;
-      userAnswers = [];
-
-      document.getElementById('start-screen').classList.remove('active');
-      document.getElementById('quiz-screen').classList.add('active');
-      showQuestion();
-    }
-
-    function showQuestion() {
-      const q = selectedBook.questions[currentQ];
-      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/${selectedBook.questions.length}`;
-      document.getElementById('q-text').innerText = q.q;
-      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / selectedBook.questions.length) * 100}%`;
-
-      const optionsContainer = document.getElementById('options-container');
-      optionsContainer.innerHTML = '';
-
-      q.a.forEach(answer => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.type = 'button';
-        btn.innerText = answer.text;
-        btn.onclick = () => selectOption(answer);
-        optionsContainer.appendChild(btn);
+      // 카테고리 버튼 클릭 이벤트
+      tagBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tagBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-category');
+          filterCards();
+        });
       });
-    }
-
-    function selectOption(selectedAnswer) {
-      const currentQuestion = selectedBook.questions[currentQ];
-      const correctAnswer = currentQuestion.a.find(item => item.isCorrect);
-
-      userAnswers.push({
-        question: currentQuestion.q,
-        selected: selectedAnswer.text,
-        correct: correctAnswer.text,
-        isCorrect: selectedAnswer.isCorrect
-      });
-
-      if (selectedAnswer.isCorrect) score++;
-      currentQ++;
-
-      if (currentQ < selectedBook.questions.length) {
-        showQuestion();
-      } else {
-        showLoading();
-      }
-    }
-
-    function showLoading() {
-      document.getElementById('quiz-screen').classList.remove('active');
-      document.getElementById('loading-screen').classList.add('active');
-
-      setTimeout(() => {
-        document.getElementById('loading-screen').classList.remove('active');
-        showResult();
-      }, 800);
-    }
-
-    function showResult() {
-      document.getElementById('result-score').innerText = `${selectedBook.title} - ${selectedBook.questions.length}문제 중 ${score}문제 이해!`;
-
-      let title = "";
-      if (score === 10) title = "완벽한 이해! 책의 정수를 흡수하셨습니다 🌟";
-      else if (score >= 7) title = "훌륭합니다! 핵심 맥락을 잘 기억하고 있어요 👍";
-      else title = "다시 읽어보며 핵심을 다져보세요 📖";
-
-      document.getElementById('result-title').innerText = title;
-
-      // 실행 카드 옵션 렌더링
-      const actionSelect = document.getElementById('action-select');
-      actionSelect.innerHTML = '';
-      selectedBook.actionOptions.forEach(opt => {
-        const option = document.createElement('option');
-        option.value = opt;
-        option.innerText = opt;
-        actionSelect.appendChild(option);
-      });
-
-      renderReviewList();
-      document.getElementById('result-screen').classList.add('active');
-    }
-
-    function renderReviewList() {
-      const reviewList = document.getElementById('review-list');
-      reviewList.innerHTML = '';
-
-      userAnswers.forEach((item) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = `review-item ${item.isCorrect ? '' : 'wrong'}`;
-        itemDiv.innerHTML = `
-          <div class="review-q">${item.isCorrect ? '✅' : '❌'} ${item.question}</div>
-          ${!item.isCorrect ? `<div class="ans-my">내 선택: ${item.selected}</div>` : ''}
-          <div class="ans-correct">올바른 관점: ${item.correct}</div>
-        `;
-        reviewList.appendChild(itemDiv);
-      });
-    }
-
-    function goToHome() {
-      document.getElementById('result-screen').classList.remove('active');
-      document.getElementById('start-screen').classList.add('active');
-    }
+    });
   </script>
+
 </body>
 </html>
