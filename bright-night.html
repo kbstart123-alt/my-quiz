@@ -232,7 +232,6 @@
       color: var(--white);
     }
 
-    /* 독서 비주얼 카드 (Visual Card) 섹션 */
     .visual-card-section {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(236, 204, 104, 0.35);
@@ -259,7 +258,6 @@
       line-height: 1.4;
     }
 
-    /* 비주얼 카드 슬라이더 */
     .card-slider {
       display: flex;
       gap: 12px;
@@ -396,6 +394,22 @@
       color: var(--correct-color);
       font-weight: 600;
     }
+
+    /* 추가된 푸터 출처 스타일 */
+    .source-footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      font-size: 0.78rem;
+      color: var(--sub-text);
+      line-height: 1.5;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .source-footer strong {
+      color: var(--text-color);
+    }
   </style>
 </head>
 <body>
@@ -417,6 +431,11 @@
         <button type="button" class="btn" onclick="startQuiz()">퀴즈 시작하기</button>
         <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
       </div>
+
+      <!-- 출처 표기 영역 -->
+      <footer class="source-footer">
+        📌 본 콘텐츠는 <strong>최은영 작가의 소설 《밝은 밤》(문학동네)</strong>의 원작 내용을 바탕으로 작성된 독서 서평 및 감상용 공부 노트입니다.
+      </footer>
     </div>
 
     <!-- 2. 퀴즈 화면 -->
@@ -454,7 +473,7 @@
             <div class="v-card-body">
               "아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."
             </div>
-            <div class="v-card-footer">#밝은밤 #최은영</div>
+            <div class="v-card-footer">출처: 《밝은 밤》 (문학동네)</div>
           </div>
           <!-- 카드 2 -->
           <div class="v-card">
@@ -462,15 +481,15 @@
             <div class="v-card-body">
               "내가 아무리 깊은 밤에 길을 잃어도, 나를 부르고 기다려주는 사람이 단 한 명이라도 있다는 것."
             </div>
-            <div class="v-card-footer">#연대 #다정함</div>
+            <div class="v-card-footer">출처: 《밝은 밤》 (문학동네)</div>
           </div>
           <!-- 카드 3 -->
           <div class="v-card">
             <span class="v-card-tag">CARD 03. 독서모임 추천사</span>
             <div class="v-card-body">
-              "내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 내 자신을 가만히 안아주게 만드는 책."
+              "내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 나 자신을 가만히 안아주게 만드는 책."
             </div>
-            <div class="v-card-footer">#독서모임 #추천도서</div>
+            <div class="v-card-footer">출처: 《밝은 밤》 (문학동네)</div>
           </div>
         </div>
 
@@ -492,6 +511,11 @@
         <button type="button" class="btn" onclick="restartQuiz()">다시 풀어보기</button>
         <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
       </div>
+
+      <!-- 결과 화면 하단 출처 표기 -->
+      <footer class="source-footer">
+        📌 도서 관련 문구 및 인용 저작권은 <strong>최은영 작가 및 출판사 문학동네</strong>에 있습니다.
+      </footer>
     </div>
 
   </div>
@@ -674,7 +698,7 @@
     }
 
     function copyRecommendation() {
-      const text = `[소설 『밝은 밤』 1분 추천사]\n\n"아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."\n\n내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 나 자신을 가만히 안아주게 만드는 책입니다. 독서모임 추천도서로 강력 추천합니다!`;
+      const text = `[소설 『밝은 밤』 1분 추천사]\n(원작: 최은영 / 출판사: 문학동네)\n\n"아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."\n\n내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 나 자신을 가만히 안아주게 만드는 책입니다. 독서모임 추천도서로 강력 추천합니다!`;
       navigator.clipboard.writeText(text).then(() => {
         showToast("추천사가 클립보드에 복사되었습니다!");
       });
