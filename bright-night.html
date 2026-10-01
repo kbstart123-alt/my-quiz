@@ -38,7 +38,7 @@
     .container {
       background: var(--card-bg);
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       border-radius: 24px;
       padding: 32px 24px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
@@ -106,7 +106,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 24px;
     }
 
     .btn {
@@ -232,32 +232,73 @@
       color: var(--white);
     }
 
-    .action-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(236, 204, 104, 0.3);
-      border-radius: 16px;
-      padding: 20px;
+    /* 파인만 기법 3문장 요약 + 실행과제 카드 */
+    .feynman-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(236, 204, 104, 0.35);
+      border-radius: 18px;
+      padding: 22px 18px;
       text-align: left;
-      margin-bottom: 20px;
+      margin-top: 24px;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
     }
 
-    .action-title {
-      font-size: 0.95rem;
-      font-weight: 700;
+    .feynman-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+      font-weight: 800;
       color: var(--text-color);
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
 
-    .action-select {
-      width: 100%;
+    .feynman-subtitle {
+      font-size: 0.8rem;
+      color: var(--sub-text);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .feynman-item {
+      margin-bottom: 14px;
       padding: 12px;
+      background: rgba(0, 0, 0, 0.2);
       border-radius: 10px;
+      border-left: 3px solid var(--text-color);
+    }
+
+    .feynman-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .feynman-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--sub-text);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .feynman-text {
+      font-size: 0.9rem;
+      color: var(--white);
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    .feynman-select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       background-color: var(--bg-color);
-      color: var(--white);
-      font-size: 0.9rem;
-      margin-bottom: 12px;
+      color: var(--text-color);
+      font-size: 0.85rem;
+      margin-top: 6px;
       outline: none;
+      cursor: pointer;
     }
 
     .review-section {
@@ -348,18 +389,35 @@
       <div class="result-score" id="result-score">10문제 중 0문제 이해!</div>
       <h2 class="result-title" id="result-title">결과 타이틀</h2>
 
-      <!-- 실행 카드(Action Item) 연계 -->
-      <div class="action-box">
-        <div class="action-title">🌱 오늘 내 삶에 새길 다정한 약속</div>
-        <select id="action-select" class="action-select">
-          <option value="오랫동안 연락 못 한 다정한 이에게 짧은 안부 보내기">오랫동안 연락 못 한 이에게 짧은 안부 보내기</option>
-          <option value="오늘 하루 고생한 나 자신에게 비난 대신 따뜻한 밥 한 끼 선물하기">나 자신에게 비난 대신 따뜻한 밥 한 끼 선물하기</option>
-          <option value="누군가의 슬픔을 섣불리 판단하지 않고 그저 가만히 들어주기">누군가의 슬픔을 섣불리 판단하지 않고 들어주기</option>
-          <option value="나만의 '희령' 같은 조용한 휴식 공간 만들어보기">나만의 '희령' 같은 조용한 휴식 공간 만들어보기</option>
-        </select>
+      <!-- 파인만 기법(Feynman Technique) 기반 3문장 요약 + 실행 과제 카드 -->
+      <div class="feynman-card">
+        <div class="feynman-header">
+          <span>🧠 파인만 기법 3문장 요약</span>
+        </div>
+        <p class="feynman-subtitle">남에게 설명하듯 핵심을 압축하고, 딱 하나의 행동만 내 삶에 적용해 보세요.</p>
+
+        <div class="feynman-item">
+          <div class="feynman-label">📌 1. 한 줄 요약 (핵심 메시지)</div>
+          <div class="feynman-text">"아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."</div>
+        </div>
+
+        <div class="feynman-item">
+          <div class="feynman-label">💬 2. 가장 인상 깊은 구절</div>
+          <div class="feynman-text">"내가 아무리 깊은 밤에 길을 잃어도, 나를 부르고 기다려주는 사람이 단 한 명이라도 있다는 것."</div>
+        </div>
+
+        <div class="feynman-item">
+          <div class="feynman-label">🌱 3. 내 삶에 적용할 1가지 행동 (Action Item)</div>
+          <select id="action-select" class="feynman-select">
+            <option value="1">이번 주 오랫동안 연락 못 한 이에게 조건 없는 안부 보내기</option>
+            <option value="2">오늘 밤 자책 대신 수고한 나 자신에게 따뜻한 밥 한 끼 선물하기</option>
+            <option value="3">누군가의 슬픔을 섣불리 판단하거나 조언하지 않고 들어주기</option>
+            <option value="4">지친 내 마음이 온전히 쉴 수 있는 나만의 '희령' 공간 정하기</option>
+          </select>
+        </div>
       </div>
 
-      <!-- 오답 노트 영역 -->
+      <!-- 오답 노트 및 해설 영역 -->
       <div class="review-section">
         <div class="review-title">📝 복습 및 책의 관점 확인</div>
         <div id="review-list"></div>
