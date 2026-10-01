@@ -232,73 +232,124 @@
       color: var(--white);
     }
 
-    /* 파인만 기법 3문장 요약 + 실행과제 카드 */
-    .feynman-card {
+    /* 독서 비주얼 카드 (Visual Card) 섹션 */
+    .visual-card-section {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(236, 204, 104, 0.35);
       border-radius: 18px;
-      padding: 22px 18px;
+      padding: 20px 16px;
       text-align: left;
       margin-top: 24px;
-      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
     }
 
-    .feynman-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.05rem;
+    .visual-header {
+      font-size: 1rem;
       font-weight: 800;
       color: var(--text-color);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .feynman-subtitle {
+    .visual-desc {
       font-size: 0.8rem;
       color: var(--sub-text);
       margin-bottom: 16px;
       line-height: 1.4;
     }
 
-    .feynman-item {
-      margin-bottom: 14px;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-      border-left: 3px solid var(--text-color);
+    /* 비주얼 카드 슬라이더 */
+    .card-slider {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scroll-snap-type: x mandatory;
     }
 
-    .feynman-item:last-child {
-      margin-bottom: 0;
+    .card-slider::-webkit-scrollbar {
+      height: 6px;
     }
 
-    .feynman-label {
-      font-size: 0.78rem;
+    .card-slider::-webkit-scrollbar-thumb {
+      background: rgba(236, 204, 104, 0.3);
+      border-radius: 3px;
+    }
+
+    .v-card {
+      min-width: 240px;
+      max-width: 240px;
+      height: 280px;
+      background: linear-gradient(145deg, #2c3e50, #0c1021);
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      scroll-snap-align: start;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+    }
+
+    .v-card-tag {
+      font-size: 0.7rem;
       font-weight: 700;
-      color: var(--sub-text);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--text-color);
+      background: rgba(236, 204, 104, 0.15);
+      padding: 3px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
     }
 
-    .feynman-text {
-      font-size: 0.9rem;
+    .v-card-body {
+      font-size: 0.88rem;
       color: var(--white);
       line-height: 1.5;
       word-break: keep-all;
+      margin: 12px 0;
     }
 
-    .feynman-select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background-color: var(--bg-color);
+    .v-card-footer {
+      font-size: 0.75rem;
+      color: var(--sub-text);
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-top: 8px;
+      text-align: right;
+    }
+
+    .share-btn-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .share-btn {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid rgba(236, 204, 104, 0.4);
+      background: rgba(236, 204, 104, 0.1);
       color: var(--text-color);
-      font-size: 0.85rem;
-      margin-top: 6px;
-      outline: none;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .share-btn:hover {
+      background: rgba(236, 204, 104, 0.25);
+    }
+
+    .toast-msg {
+      display: none;
+      font-size: 0.78rem;
+      color: var(--correct-color);
+      text-align: center;
+      margin-top: 8px;
+      font-weight: 600;
     }
 
     .review-section {
@@ -389,32 +440,45 @@
       <div class="result-score" id="result-score">10문제 중 0문제 이해!</div>
       <h2 class="result-title" id="result-title">결과 타이틀</h2>
 
-      <!-- 파인만 기법(Feynman Technique) 기반 3문장 요약 + 실행 과제 카드 -->
-      <div class="feynman-card">
-        <div class="feynman-header">
-          <span>🧠 파인만 기법 3문장 요약</span>
+      <!-- 독서 비주얼 카드 (Visual Card) & 독서모임 공유 영역 -->
+      <div class="visual-card-section">
+        <div class="visual-header">
+          <span>📸 1분 요약 비주얼 카드 (출력 독서법)</span>
         </div>
-        <p class="feynman-subtitle">남에게 설명하듯 핵심을 압축하고, 딱 하나의 행동만 내 삶에 적용해 보세요.</p>
+        <p class="visual-desc">친구에게 1분 만에 이 책을 추천하듯 완성된 3개의 요약 카드입니다. 독서모임이나 SNS에 공유해보세요.</p>
 
-        <div class="feynman-item">
-          <div class="feynman-label">📌 1. 한 줄 요약 (핵심 메시지)</div>
-          <div class="feynman-text">"아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."</div>
+        <div class="card-slider">
+          <!-- 카드 1 -->
+          <div class="v-card">
+            <span class="v-card-tag">CARD 01. 핵심 한 줄</span>
+            <div class="v-card-body">
+              "아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."
+            </div>
+            <div class="v-card-footer">#밝은밤 #최은영</div>
+          </div>
+          <!-- 카드 2 -->
+          <div class="v-card">
+            <span class="v-card-tag">CARD 02. 마음을 울린 문장</span>
+            <div class="v-card-body">
+              "내가 아무리 깊은 밤에 길을 잃어도, 나를 부르고 기다려주는 사람이 단 한 명이라도 있다는 것."
+            </div>
+            <div class="v-card-footer">#연대 #다정함</div>
+          </div>
+          <!-- 카드 3 -->
+          <div class="v-card">
+            <span class="v-card-tag">CARD 03. 독서모임 추천사</span>
+            <div class="v-card-body">
+              "내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 내 자신을 가만히 안아주게 만드는 책."
+            </div>
+            <div class="v-card-footer">#독서모임 #추천도서</div>
+          </div>
         </div>
 
-        <div class="feynman-item">
-          <div class="feynman-label">💬 2. 가장 인상 깊은 구절</div>
-          <div class="feynman-text">"내가 아무리 깊은 밤에 길을 잃어도, 나를 부르고 기다려주는 사람이 단 한 명이라도 있다는 것."</div>
+        <div class="share-btn-group">
+          <button type="button" class="share-btn" onclick="copyRecommendation()">💬 1분 추천사 복사</button>
+          <button type="button" class="share-btn" onclick="shareUrl()">🔗 테스트 링크 공유</button>
         </div>
-
-        <div class="feynman-item">
-          <div class="feynman-label">🌱 3. 내 삶에 적용할 1가지 행동 (Action Item)</div>
-          <select id="action-select" class="feynman-select">
-            <option value="1">이번 주 오랫동안 연락 못 한 이에게 조건 없는 안부 보내기</option>
-            <option value="2">오늘 밤 자책 대신 수고한 나 자신에게 따뜻한 밥 한 끼 선물하기</option>
-            <option value="3">누군가의 슬픔을 섣불리 판단하거나 조언하지 않고 들어주기</option>
-            <option value="4">지친 내 마음이 온전히 쉴 수 있는 나만의 '희령' 공간 정하기</option>
-          </select>
-        </div>
+        <div id="toast-msg" class="toast-msg">텍스트가 클립보드에 복사되었습니다!</div>
       </div>
 
       <!-- 오답 노트 및 해설 영역 -->
@@ -607,6 +671,35 @@
         `;
         reviewList.appendChild(itemDiv);
       });
+    }
+
+    function copyRecommendation() {
+      const text = `[소설 『밝은 밤』 1분 추천사]\n\n"아무리 아득한 밤이어도 누군가의 다정한 온기와 연결감이 있다면 삶은 다시 켜질 수 있다."\n\n내 삶의 뿌리가 된 여성들의 서사를 따라가며, 상처 입은 나 자신을 가만히 안아주게 만드는 책입니다. 독서모임 추천도서로 강력 추천합니다!`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("추천사가 클립보드에 복사되었습니다!");
+      });
+    }
+
+    function shareUrl() {
+      if (navigator.share) {
+        navigator.share({
+          title: '밝은 밤 상황극 감성 퀴즈',
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          showToast("링크가 클립보드에 복사되었습니다!");
+        });
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
     }
 
     function restartQuiz() {
