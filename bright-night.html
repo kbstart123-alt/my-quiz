@@ -121,6 +121,9 @@
       cursor: pointer;
       transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(74, 105, 189, 0.4);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
     }
 
     .btn:hover {
@@ -320,6 +323,7 @@
 
       <div class="btn-group">
         <button type="button" class="btn" onclick="startQuiz()">퀴즈 시작하기</button>
+        <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
       </div>
     </div>
 
@@ -361,8 +365,10 @@
         <div id="review-list"></div>
       </div>
 
+      <!-- 결과 화면 하단 버튼 그룹 -->
       <div class="btn-group">
         <button type="button" class="btn" onclick="restartQuiz()">다시 풀어보기</button>
+        <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
       </div>
     </div>
 
@@ -533,7 +539,7 @@
       const reviewList = document.getElementById('review-list');
       reviewList.innerHTML = '';
 
-      userAnswers.forEach((item, index) => {
+      userAnswers.forEach((item) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = `review-item ${item.isCorrect ? '' : 'wrong'}`;
         itemDiv.innerHTML = `
