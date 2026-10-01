@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인간실격 - 인간의 내면을 마주하는 심리 상황극 퀴즈 🌑</title>
+  <style>
+    :root {
+      --primary-color: #5c636a;
+      --primary-hover: #3d4146;
+      --bg-color: #0d0f12;
+      --card-bg: #1a1d24;
+      --text-color: #d1d5db;
+      --accent-color: #e63946;
+      --sub-text: #8b929e;
+      --wrong-color: #ff6b6b;
+      --correct-color: #2ed573;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--white);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-image: radial-gradient(circle at 50% 20%, #181c24 0%, #0d0f12 100%);
+    }
+
+    .container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 520px;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: rgba(230, 57, 70, 0.15);
+      color: var(--accent-color);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(230, 57, 70, 0.3);
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--sub-text);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .banner-box {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #2b2e38 0%, #0d0f12 100%);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-color);
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px;
+    }
+
+    .banner-icon {
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-sub {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: var(--sub-text);
+      box-shadow: none;
+    }
+
+    .btn-sub:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: none;
+    }
+
+    .progress-wrapper {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.1);
+      height: 8px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #5c636a, #e63946);
+      transition: width 0.3s ease;
+    }
+
+    .q-number {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      line-height: 1.6;
+      min-height: 70px;
+      text-align: left;
+      word-break: keep-all;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      line-height: 1.5;
+      word-break: keep-all;
+    }
+
+    .option-btn:hover {
+      border-color: var(--accent-color);
+      background-color: rgba(230, 57, 70, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-top: 5px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 40px auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .result-score {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      margin-bottom: 6px;
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+
+    .visual-card-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(230, 57, 70, 0.3);
+      border-radius: 18px;
+      padding: 20px 16px;
+      text-align: left;
+      margin-top: 24px;
+    }
+
+    .visual-header {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-color);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .visual-desc {
+      font-size: 0.8rem;
+      color: var(--sub-text);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .card-slider {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .card-slider::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .card-slider::-webkit-scrollbar-thumb {
+      background: rgba(230, 57, 70, 0.4);
+      border-radius: 3px;
+    }
+
+    .v-card {
+      min-width: 240px;
+      max-width: 240px;
+      height: 280px;
+      background: linear-gradient(145deg, #232731, #0d0f12);
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      scroll-snap-align: start;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+      flex-shrink: 0;
+    }
+
+    .v-card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      background: rgba(230, 57, 70, 0.15);
+      padding: 3px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    .v-card-body {
+      font-size: 0.88rem;
+      color: var(--white);
+      line-height: 1.5;
+      word-break: keep-all;
+      margin: 12px 0;
+    }
+
+    .v-card-footer {
+      font-size: 0.75rem;
+      color: var(--sub-text);
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-top: 8px;
+      text-align: right;
+    }
+
+    .share-btn-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .share-btn {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid rgba(230, 57, 70, 0.4);
+      background: rgba(230, 57, 70, 0.1);
+      color: var(--text-color);
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .share-btn:hover {
+      background: rgba(230, 57, 70, 0.25);
+    }
+
+    .toast-msg {
+      display: none;
+      font-size: 0.78rem;
+      color: var(--correct-color);
+      text-align: center;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .review-section {
+      text-align: left;
+      margin-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+    }
+
+    .review-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-color);
+      margin-bottom: 14px;
+    }
+
+    .review-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .review-item.wrong {
+      background: rgba(255, 107, 107, 0.08);
+      border-color: rgba(255, 107, 107, 0.2);
+    }
+
+    .review-q {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .ans-my {
+      color: var(--wrong-color);
+      margin-bottom: 4px;
+    }
+
+    .ans-correct {
+      color: var(--correct-color);
+      font-weight: 600;
+    }
+
+    .source-footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      font-size: 0.78rem;
+      color: var(--sub-text);
+      line-height: 1.5;
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .source-footer strong {
+      color: var(--text-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. 시작 화면 -->
+    <div id="start-screen" class="screen active">
+      <span class="badge">다자이 오사무 대표작</span>
+      <h1 class="title">인간실격 🌑<br>심리 탐구 상황극 퀴즈</h1>
+      <p class="subtitle">"부끄럼 많은 생애를 살아왔습니다."<br>주인공 요조의 고독과 타인에 대한 두려움을 마주해보세요.</p>
+      
+      <div class="banner-box">
+        <div class="banner-icon">🎭</div>
+        <div style="font-size: 0.9rem; font-weight: 600; line-height: 1.4;">"타인에 대한 공포를 숨기기 위해,<br>나는 익살꾼이라는 가면을 썼다."</div>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn" onclick="startQuiz()">퀴즈 시작하기</button>
+        <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
+      </div>
+
+      <!-- 출처 표기 영역 -->
+      <footer class="source-footer">
+        📌 본 콘텐츠는 <strong>다자이 오사무의 소설 《인간실격》</strong>의 원작 내용을 바탕으로 작성된 독서 서평 및 감상용 공부 노트입니다.
+      </footer>
+    </div>
+
+    <!-- 2. 퀴즈 화면 -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-wrapper">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="q-number" class="q-number">QUESTION 01/10</div>
+      <div id="q-text" class="q-text">질문 내용</div>
+      <div id="options-container" class="options-container"></div>
+    </div>
+
+    <!-- 3. 로딩 화면 -->
+    <div id="loading-screen" class="screen">
+      <div class="spinner"></div>
+      <p style="color: var(--sub-text); font-size: 0.95rem;">내면의 고독과 심리를 분석하는 중입니다...</p>
+    </div>
+
+    <!-- 4. 결과 화면 -->
+    <div id="result-screen" class="screen">
+      <div class="result-score" id="result-score">10문제 중 0문제 이해!</div>
+      <h2 class="result-title" id="result-title">결과 타이틀</h2>
+
+      <!-- 독서 비주얼 카드 (Visual Card) & 독서모임 공유 영역 -->
+      <div class="visual-card-section">
+        <div class="visual-header">
+          <span>📸 1분 요약 비주얼 카드 (출력 독서법)</span>
+        </div>
+        <p class="visual-desc">친구에게 1분 만에 이 책을 추천하듯 완성된 3개의 요약 카드입니다. 독서모임이나 SNS에 공유해보세요.</p>
+
+        <div class="card-slider">
+          <!-- 카드 1 -->
+          <div class="v-card">
+            <span class="v-card-tag">CARD 01. 핵심 메시지</span>
+            <div class="v-card-body">
+              "타인과의 솔직한 소통에 실패하고 순수함을 상실할 때, 인간은 고독의 깊은 심연에 빠진다."
+            </div>
+            <div class="v-card-footer">출처: 《인간실격》 (다자이 오사무)</div>
+          </div>
+          <!-- 카드 2 -->
+          <div class="v-card">
+            <span class="v-card-tag">CARD 02. 마음을 울린 문장</span>
+            <div class="v-card-body">
+              "부끄럼 많은 생애를 살아왔습니다. 저는 인간의 삶이라는 것을 도무지 이해할 수 없었습니다."
+            </div>
+            <div class="v-card-footer">출처: 《인간실격》 (다자이 오사무)</div>
+          </div>
+          <!-- 카드 3 -->
+          <div class="v-card">
+            <span class="v-card-tag">CARD 03. 독서모임 추천사</span>
+            <div class="v-card-body">
+              "연기와 가면으로 상처를 숨겨본 적 있는 현대인에게, 본연의 나와 타인과의 관계를 되돌아보게 하는 명작."
+            </div>
+            <div class="v-card-footer">출처: 《인간실격》 (다자이 오사무)</div>
+          </div>
+        </div>
+
+        <div class="share-btn-group">
+          <button type="button" class="share-btn" onclick="copyRecommendation()">💬 1분 추천사 복사</button>
+          <button type="button" class="share-btn" onclick="shareUrl()">🔗 테스트 링크 공유</button>
+        </div>
+        <div id="toast-msg" class="toast-msg">텍스트가 클립보드에 복사되었습니다!</div>
+      </div>
+
+      <!-- 오답 노트 및 해설 영역 -->
+      <div class="review-section">
+        <div class="review-title">📝 복습 및 책의 관점 확인</div>
+        <div id="review-list"></div>
+      </div>
+
+      <!-- 결과 화면 하단 버튼 그룹 -->
+      <div class="btn-group">
+        <button type="button" class="btn" onclick="restartQuiz()">다시 풀어보기</button>
+        <a href="./index.html" class="btn btn-sub">메인으로 돌아가기</a>
+      </div>
+
+      <!-- 결과 화면 하단 출처 표기 -->
+      <footer class="source-footer">
+        📌 도서 관련 문구 및 인용 저작권은 **다자이 오사무의 원작 및 해당 번역 출판사**에 있습니다.
+      </footer>
+    </div>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "Q1. [익살꾼의 가면] 요조가 어린 시절부터 타인에 대한 공포와 불신을 숨기기 위해 선택한 행동 방식은?",
+        a: [
+          { text: "1. 남들을 웃기기 위해 일부러 엉뚱한 짓을 하는 '익살꾼'을 자처한다.", isCorrect: true },
+          { text: "2. 세상과의 단절을 선언하고 아무도 만나지 않는다.", isCorrect: false },
+          { text: "3. 타인에게 강하게 공격성을 드러내며 제압하려 한다.", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q2. [타인에 대한 두려움] 요조가 집안의 하인들이나 사람들의 위선과 거짓말을 목격했을 때 느낀 고통의 본질은?",
+        a: [
+          { text: "1. 인간이 서로 다른 얼굴을 가지고 거짓을 아무렇지도 않게 말한다는 것에 대한 기묘한 공포", isCorrect: true },
+          { text: "2. 그들을 교화시켜 바른길로 인도해야겠다는 사명감", isCorrect: false },
+          { text: "3. 나도 더 큰 거짓말을 해서 사람들을 속여야겠다는 승부욕", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q3. [가면의 간파] 학창 시절 동급생 '다케이치'가 요조의 연기(익살)를 보고 던진 한마디가 요조를 공포에 빠뜨린 이유는?",
+        a: [
+          { text: "1. \"너 일부러 그랬지?\"라며 연기를 간파당해 완벽했던 방어막이 깨졌기 때문에", isCorrect: true },
+          { text: "2. 요조의 그림 실력을 시기하며 욕을 했기 때문에", isCorrect: false },
+          { text: "3. 요조가 모아둔 돈을 빼앗으려 했기 때문에", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q4. [호레이와의 관계] 요조가 미술 학교 시절 만나게 된 '호레이'라는 인물과 공유했던 관계의 성격은?",
+        a: [
+          { text: "1. 서로의 순수한 이상과 꿈을 격려해 주는 참된 우정", isCorrect: false },
+          { text: "2. 술, 방탕함, 퇴폐적인 삶을 공유하지만 진정한 속마음은 털어놓지 못하는 관계", isCorrect: true },
+          { text: "3. 비즈니스적 성공을 위해 mutual 신뢰를 바탕으로 만든 파트너십", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q5. [동반 자살의 비극] 요조가 카페 여급 '쓰네코'와 카마쿠라 바다에 던져졌을 때 느낀 절망의 진짜 원인은?",
+        a: [
+          { text: "1. 여급만 죽고 자신만 살아남았다는 죄책감과 생에 대한 극심한 수치심", isCorrect: true },
+          { text: "2. 수영을 못해서 물에 빠졌다는 창피함", isCorrect: false },
+          { text: "3. 경찰에 조사받는 동안 돈을 다 잃어버린 것에 대한 아까움", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q6. [신뢰와 상처] 요조가 순진무구하고 상대를 의심할 줄 모르는 여인 '요시코'와 결혼했음에도 결국 비극으로 치달은 계기는?",
+        a: [
+          { text: "1. 요시코의 지나친 의심 없는 순수함이 타인에게 이용당해 파괴되는 비극을 목격했기 때문에", isCorrect: true },
+          { text: "2. 요시코가 요조의 과거를 알게 되어 이혼을 요구했기 때문에", isCorrect: false },
+          { text: "3. 요조가 경제적 성공을 거두자 요시코를 버렸기 때문에", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q7. [약물 중독과 폐인] 현실의 상처와 죄책감을 잊기 위해 요조가 빠져들었던 자학적인 수단은?",
+        a: [
+          { text: "1. 모체성 의약품(파보린/약물)에 의존하며 신체와 정신을 파괴해 감", isCorrect: true },
+          { text: "2. 정치 활동에 투신하여 사회 개혁을 시도함", isCorrect: false },
+          { text: "3. 종교에 귀의하여 성직자가 됨", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q8. [인간 실격의 선언] 요조가 정신병원에 입원하게 되면서 스스로에게 붙인 '인간 실격'의 의미는?",
+        a: [
+          { text: "1. 더 이상 사회가 요구하는 '보통의 인간'으로서 살아갈 자격을 상실했다는 자조적 규정", isCorrect: true },
+          { text: "2. 범죄를 저질러 법적으로 권리를 박탈당했다는 의미", isCorrect: false },
+          { text: "3. 시험이나 평가에서 낙제점수를 받았다는 뜻", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q9. [마지막 마담의 증언] 소설의 서장과 후장에 등장하는 마담이 돌아본 '요조'라는 인물에 대한 평가는?",
+        a: [
+          { text: "1. \"우리가 아는 요조는 아주 순수하고 눈치 빠르고, 하나님처럼 착한 아이였습니다.\"", isCorrect: true },
+          { text: "2. \"그는 주변 사람들을 괴롭히고 파멸로 이끈 희대의 악마였습니다.\"", isCorrect: false },
+          { text: "3. \"그저 돈만 아는 이기적인 인물에 불과했습니다.\"", isCorrect: false }
+        ]
+      },
+      {
+        q: "Q10. [책을 관통하는 메시지] 《인간실격》이 현대인들에게 주는 깊은 울림은?",
+        a: [
+          { text: "1. 완벽한 가면 뒤에 숨겨진 인간 본연의 고독과 순수함, 그리고 소통의 부재를 마주하게 함", isCorrect: true },
+          { text: "2. 남들에게 무조건 착하게 보여야 성공한다는 지침", isCorrect: false },
+          { text: "3. 세상과 타인을 완전히 무시하고 이기적으로 살아야 한다는 주장", isCorrect: false }
+        ]
+      }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let userAnswers = [];
+
+    function startQuiz() {
+      currentQ = 0;
+      score = 0;
+      userAnswers = [];
+      document.getElementById('start-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('q-number').innerText = `QUESTION ${String(currentQ + 1).padStart(2, '0')}/10`;
+      document.getElementById('q-text').innerText = q.q;
+      document.getElementById('progress-bar').style.width = `${((currentQ + 1) / 10) * 100}%`;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.a.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.type = 'button';
+        btn.innerText = answer.text;
+        btn.onclick = () => selectOption(answer);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedAnswer) {
+      const currentQuestion = questions[currentQ];
+      const correctAnswer = currentQuestion.a.find(item => item.isCorrect);
+
+      userAnswers.push({
+        question: currentQuestion.q,
+        selected: selectedAnswer.text,
+        correct: correctAnswer.text,
+        isCorrect: selectedAnswer.isCorrect
+      });
+
+      if (selectedAnswer.isCorrect) score++;
+      currentQ++;
+
+      if (currentQ < questions.length) {
+        showQuestion();
+      } else {
+        showLoading();
+      }
+    }
+
+    function showLoading() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('loading-screen').classList.add('active');
+
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.remove('active');
+        showResult();
+      }, 800);
+    }
+
+    function showResult() {
+      document.getElementById('result-score').innerText = `10문제 중 ${score}문항의 마음을 깊이 이해하셨습니다.`;
+
+      let title = "";
+      if (score === 10) title = "요조의 내면을 마주한 통찰자 🎭";
+      else if (score >= 7) title = "고독과 순수를 이해하는 다정한 이웃 🕯️";
+      else title = "가면 뒤의 진실을 찾아가는 탐색자 🌑";
+
+      document.getElementById('result-title').innerText = title;
+
+      renderReviewList();
+      document.getElementById('result-screen').classList.add('active');
+    }
+
+    function renderReviewList() {
+      const reviewList = document.getElementById('review-list');
+      reviewList.innerHTML = '';
+
+      userAnswers.forEach((item) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = `review-item ${item.isCorrect ? '' : 'wrong'}`;
+        itemDiv.innerHTML = `
+          <div class="review-q">${item.isCorrect ? '✅' : '❌'} ${item.question}</div>
+          ${!item.isCorrect ? `<div class="ans-my">내 선택: ${item.selected}</div>` : ''}
+          <div class="ans-correct">올바른 관점: ${item.correct}</div>
+        `;
+        reviewList.appendChild(itemDiv);
+      });
+    }
+
+    function copyRecommendation() {
+      const text = `[소설 『인간실격』 1분 추천사]\n(원작: 다자이 오사무)\n\n"타인과의 솔직한 소통에 실패하고 순수함을 상실할 때, 인간은 고독의 깊은 심연에 빠진다."\n\n연기와 가면으로 상처를 숨겨본 적 있는 현대인에게, 본연의 나와 타인과의 관계를 되돌아보게 하는 클래식 명작입니다. 독서모임에서 깊은 대화를 나누기에 적합합니다!`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("추천사가 클립보드에 복사되었습니다!");
+      });
+    }
+
+    function shareUrl() {
+      if (navigator.share) {
+        navigator.share({
+          title: '인간실격 심리 탐구 상황극 퀴즈',
+          url: window.location.href
+        });
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          showToast("링크가 클립보드에 복사되었습니다!");
+        });
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
+    }
+
+    function restartQuiz() {
+      document.getElementById('result-screen').classList.remove('active');
+      document.getElementById('start-screen').classList.add('active');
+    }
+  </script>
+</body>
+</html>
